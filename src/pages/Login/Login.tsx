@@ -1,5 +1,5 @@
 import { FocusEvent, FormEvent, useEffect, useState, useRef, RefObject} from 'react';
-import {FieldValue, FieldValues, SubmitHandler, useForm} from 'react-hook-form';
+import {useForm} from 'react-hook-form';
 import * as Style from './Login.css';
 import { FaUserAstronaut } from "react-icons/fa";
 import { RiLockPasswordFill } from "react-icons/ri";
@@ -7,8 +7,11 @@ import Logo from '../../components/Logo/Logo';
 import useInputFocus from '../../hooks/useInputFocus';
 import useInputs from '../../hooks/useInputs';
 import { ILoginInputs } from '../../interfaces/Inputs';
+import LoadingMessage from '../../components/Messages/Loading/LoadingMessage';
+import useRequestUser from '../../hooks/useRequestUser';
 
 function Login() {
+  const {} = useRequestUser();
   const useFormInput = useRef<HTMLFormElement>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const {focusClass, setFocusClass, callReset, setCallReset} = useInputFocus();
@@ -30,8 +33,6 @@ function Login() {
   }
 
   const handleReset = () => setCallReset(true);
-
-  console.log(callReset);
   
   useEffect(() => {
     if(callReset) {
@@ -99,6 +100,8 @@ function Login() {
             {isLoading && <button disabled>Carregando...</button>}
             <button type='reset' onClick={handleReset}>Cancelar</button>
           </Style.ButtonsContainer>
+
+          {isLoading && <LoadingMessage text={'Carregando...'}/>}
 
         </Style.Form>
 
