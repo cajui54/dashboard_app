@@ -1,8 +1,8 @@
 import styled from "styled-components";
 
-export const LogoMain = styled.div`
-    width: 80%;
-    margin: 2rem auto;
+export const LogoMain = styled.div<{widthprop: number}>`
+    width: ${(props) => props.widthprop}%;
+   // margin: 2rem auto;
     text-align: center;
     h1 {
         font-size: 3.5rem;

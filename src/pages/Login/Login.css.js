@@ -8,9 +8,14 @@ export const LoginMain = styled.div`
     align-items: center;
 `
 export const FormContainer = styled.div`
+    padding-top: 2rem;
     width: 300px;
     background-color: #0f172a;
     border-radius: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 `
 export const Form = styled.form`
     width: 100%;
@@ -68,6 +73,20 @@ export const InputContainer = styled.div`
         box-shadow: 0 0 3px #2dd4bf;
     }
   
+`
+export const SVGPasswordEyes = styled.div`
+    background-color: red;
+    position: absolute;
+    top: .1rem;
+    right: 4rem;
+    svg {
+        cursor: pointer;
+        transition: all .5s ease-in-out;
+    }
+    svg:hover {
+        color: #14b8a6;
+        transform: scale(1.2);
+    }
 `
 export const ButtonsContainer = styled.div`
     width: 80%;

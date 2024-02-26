@@ -1,4 +1,6 @@
-import { FocusEvent, FormEvent, useEffect, useState, useRef, RefObject} from 'react';
+import { FocusEvent, useEffect, useState, useRef, FormEvent} from 'react';
+import { FaEyeSlash } from "react-icons/fa";
+import { IoEyeSharp } from "react-icons/io5";
 import {useForm} from 'react-hook-form';
 import * as Style from './Login.css';
 import { FaUserAstronaut } from "react-icons/fa";
@@ -9,14 +11,19 @@ import useInputs from '../../hooks/useInputs';
 import { ILoginInputs } from '../../interfaces/Inputs';
 import LoadingMessage from '../../components/Messages/Loading/LoadingMessage';
 import useRequestUser from '../../hooks/useRequestUser';
+import ErrorMessage from '../../components/Messages/Error/ErrorMessage';
 
 function Login() {
-  const {} = useRequestUser();
+  const {findUser, isLoading, setIsLoading, error} = useRequestUser();
+  const [showPassword, setShowPassword] = useState<{type: 'password' | 'text'}>({type:'password'});
+  const [submit, setSubmit] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const useFormInput = useRef<HTMLFormElement>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const {focusClass, setFocusClass, callReset, setCallReset} = useInputFocus();
   const {clearFields } = useInputs();
   const { register, handleSubmit, formState: {errors}} = useForm<ILoginInputs>();
+  
+  const handleSubmitForm = (e: FormEvent<HTMLFormElement>) => e.preventDefault();
   
   const handleFocus = (e: FocusEvent<HTMLInputElement>) => {
     e.target.name && setFocusClass({...focusClass, [e.target.name]: 'focusInput__span'});
@@ -26,36 +33,50 @@ function Login() {
     !e.target.value && setFocusClass({...focusClass, [e.target.name]: ''});
     
   }
+  const handleShowPassword = () => {
+    if(showPassword.type === 'password') setShowPassword({type: 'text'});
+    else setShowPassword({type: 'password'});
+  }
+  
+  const callLoading = () => {
+    setLoading(true);
+    setIsLoading({status: true, message:'Carregando...'});
+
+    setTimeout(() => {
+      setFocusClass({});
+      setIsLoading({status: false, message:''});
+      setLoading(false);
+      useFormInput && clearFields(useFormInput);
+    }, 1000);
+
+  }
 
   const onSubmit = (data: ILoginInputs) => {
-    console.log(data);
-    setIsLoading(true);
+    findUser(data);
+    setSubmit(true);
   }
 
   const handleReset = () => setCallReset(true);
   
   useEffect(() => {
-    if(callReset) {
-      setFocusClass({});
-      setCallReset(false);
-
-    } else  if (isLoading) {
-      setTimeout(() => {
-        setIsLoading(false);
-        setFocusClass({});
-        useFormInput && clearFields(useFormInput);
-      }, 1000);
+    if(submit) {
+      console.log(error.status);
+      if(!error.status) callLoading();
+      setSubmit(false);
     }
-    
-    
-  }, [callReset, isLoading]);
+  }, [submit]);
 
+  useEffect(() => {
+    if(callReset)  setFocusClass({});
+    
+  }, [callReset, error]);
+  
   return (
     <Style.LoginMain>
       <Style.FormContainer>
-        <Logo/>
+        <Logo widthprop={80}/>
 
-        <Style.Form ref={useFormInput}>
+        <Style.Form ref={useFormInput} onSubmit={handleSubmitForm}>
 
           <Style.InputContainer>
 
@@ -82,12 +103,16 @@ function Login() {
 
               <RiLockPasswordFill className={focusClass.password! && 'focusInput__svg'}/>
               <input
-                type="password" 
+                type={showPassword.type} 
                 required
                 {...register('password', {required: true})}
                 onFocus={handleFocus}
                 onBlur={handleBlur}
                 />
+
+              <Style.SVGPasswordEyes onClick={ handleShowPassword }>
+                {showPassword.type === 'password' ? <FaEyeSlash /> : <IoEyeSharp />}
+              </Style.SVGPasswordEyes>
 
               {errors?.password?.type === 'required' && (
                 <p className='errorMessage'>Campo senha é obrigatório!</p>
@@ -96,12 +121,13 @@ function Login() {
           </Style.InputContainer>
 
           <Style.ButtonsContainer>
-            {!isLoading && <button type='submit' onClick={() => handleSubmit(onSubmit)()}>Confirmar</button>}
-            {isLoading && <button disabled>Carregando...</button>}
+            {!isLoading.status && <button type='submit' onClick={() => handleSubmit(onSubmit)()}>Confirmar</button>}
+            {isLoading.status && <button disabled>Carregando...</button>}
             <button type='reset' onClick={handleReset}>Cancelar</button>
           </Style.ButtonsContainer>
 
-          {isLoading && <LoadingMessage text={'Carregando...'}/>}
+          { loading && <LoadingMessage text={isLoading.message}/>}
+          { error.status && <ErrorMessage text={error.message}/>}
 
         </Style.Form>
 

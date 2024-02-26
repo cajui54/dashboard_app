@@ -1,10 +1,9 @@
 import { FaArrowsRotate } from "react-icons/fa6";
+import { IProps } from "../../../interfaces/Messages";
 import * as Style from './Loading.css';
 
-interface message {
-    text: string
-}
-const LoadingMessage = ({text}: message) => {
+
+const LoadingMessage = ({text}: IProps) => {
   return (
     <Style.LoadingMain>
       {text && <p>

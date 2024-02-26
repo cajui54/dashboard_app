@@ -1,6 +1,9 @@
 import { createGlobalStyle } from "styled-components";
 
 const GlobalStyle = createGlobalStyle`
+    :root {
+        --main-bg-color--secundary: #0f172a;
+    }
     html {
         font-size: 62.5%;
     }
@@ -30,6 +33,10 @@ const GlobalStyle = createGlobalStyle`
         letter-spacing: 1px;
         color: #ef4444;
     }
-
+    .active {
+        transform: scale(1.3);
+        transition: all .9s ease-in-out;
+        color: #fff !important;
+    }
 `
 export default GlobalStyle;
