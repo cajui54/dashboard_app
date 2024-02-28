@@ -1,11 +1,12 @@
 import styled from "styled-components";
 
 export const MainScreenInfo = styled.div`
-    height: 20rem;
+    min-height: 2rem;
     width: 70%;
     margin: 3rem 2rem;
     background-color: var(--main-bg-color--secundary);;
     border-radius: 1rem;
+    padding-bottom: 1rem;
     
     h2 {
         color: #14b8a6;
@@ -13,9 +14,17 @@ export const MainScreenInfo = styled.div`
         width: 80%;
         margin: .5rem 3rem;
     }
+    .errorMessage {
+        width: 60%;
+        margin: 1rem auto;
+    }
+    .errorMessage h2 {
+        font-size: 1rem;
+        color: red;
+    }
 `
 export const ContainerInfo = styled.div`
-    width: 80%;
+    min-width: 90%;
     margin: 2rem auto;
     padding: 1rem;
     display: flex;

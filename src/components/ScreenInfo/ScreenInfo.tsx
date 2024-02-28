@@ -1,13 +1,9 @@
 import * as Style from './ScreenInfo.css';
-import { FaUsers, FaUserTie, FaUser, FaUserCog } from "react-icons/fa";
-import { IScreenInfo } from '../../interfaces/ScreenInfo';
+import { DatasListProps } from '../../interfaces/ScreenInfo';
+import ErrorMessage from '../Messages/Error/ErrorMessage';
+import WarningMessage from '../Messages/Warning/WarningMessage';
 
-interface DatasListProps  {
-  datas: IScreenInfo[],
-  titleMain: string,
-  error: {status: boolean, message: string},
-}
-const ScreenInfo = ({datas, titleMain}: DatasListProps) => {
+const ScreenInfo = ({datas, titleMain, error, warning}: DatasListProps) => {
     
   return (
     <Style.MainScreenInfo>
@@ -27,6 +23,8 @@ const ScreenInfo = ({datas, titleMain}: DatasListProps) => {
           )}
 
       </Style.ContainerInfo>
+      {error.status && <ErrorMessage text={error.message}/>}
+      {warning.status && <WarningMessage text={warning.message}/>}
     </Style.MainScreenInfo>
   )
 }

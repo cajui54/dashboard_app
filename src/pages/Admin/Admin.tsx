@@ -1,4 +1,3 @@
-import { FaUsers, FaUserTie, FaUser, FaUserCog } from "react-icons/fa";
 import ScreenInfo from '../../components/ScreenInfo/ScreenInfo';
 import * as Style from './Admin.css';
 import { IScreenInfo } from "../../interfaces/ScreenInfo";
@@ -7,18 +6,15 @@ import useRequestUser from "../../hooks/useRequestUser";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { allUsers, selectorUser } from "../../redux/slices/sliceUser";
+import { usersType } from "../../config/configAdmin";
+import { IDefaultStates } from '../../interfaces/Admin';
+import { initialeStatesMessage } from '../../config/configAdmin';
 
-const usersType: IScreenInfo[] = [
-  {subTitle: 'Total de Usuário(s)',type: 'amount', svg: FaUsers, amount: 0},
-  {subTitle: 'Comum', type: 'default', svg: FaUser, amount: 0},
-  {subTitle: 'Financeiro', type: 'finance', svg: FaUserTie, amount: 0},
-  {subTitle: 'Admin', type: 'admin', svg: FaUserCog, amount: 0},
-]
 
 const Admin = () => {
   const {users} = useSelector(selectorUser);
-  const [error, setError] = useState<{status: boolean, message: string}>({status: false, message: ''});
-  const [warning, setWarning] = useState<{status: boolean, message: string}>({status: false, message: ''});
+  const [error, setError] = useState<IDefaultStates>(initialeStatesMessage);
+  const [warning, setWarning] = useState<IDefaultStates>(initialeStatesMessage);
   const dispatch = useDispatch();
   const [initialeValues, setInitialeValues] = useState<IScreenInfo[]>(usersType);
   const {datas: datasUser} = useRequestUser() ;
@@ -29,6 +25,7 @@ const Admin = () => {
       if(data.type === 'amount') data.amount = _datas.length;
       else if(data.type === 'default') data.amount = _datas.filter((element) => element.type === data.type).length;
       else if(data.type === 'admin') data.amount = _datas.filter((element) => element.type === data.type).length;
+      else if(data.type === 'stock') data.amount = _datas.filter((element) => element.type === data.type).length;
       return data
     });
     setInitialeValues(newValues);
@@ -36,8 +33,10 @@ const Admin = () => {
 
   useEffect(() => {
   try {
-    if(!sessionStorage) {
+    if(sessionStorage) {
       saveAllDatas(datasUser, 'users');
+      setError(initialeStatesMessage);
+      setWarning(initialeStatesMessage);
     } else {
       throw Error ('Local Storage está desabilitado!');
     }  
@@ -54,25 +53,36 @@ const Admin = () => {
   }, [datasUser]);
 
   useEffect(() => {
-    const t = false;
-    //sessionStorage
-    
-    if(t) {
-      const datas = sessionStorage.getItem('users');
-      const dataJSON = datas && JSON.parse(datas);
-      dataJSON && getAmountUsers(dataJSON);
+ 
+    try {
+      if(sessionStorage) {
+        const datas = sessionStorage.getItem('users');
+        const dataJSON = datas && JSON.parse(datas);
+        dataJSON && getAmountUsers(dataJSON);
+        setError(initialeStatesMessage);
+        setWarning(initialeStatesMessage);
+      } else {
+        throw new Error('Ocorreu um erro no LocalStorage');
+      }
 
-    } else if (users.length > 0) {
-      getAmountUsers(users);
-      
-    } else if (users.length === 0) {
-      setInitialeValues(usersType);
+    } catch(e) {
+
+      if (users.length > 0) {
+        getAmountUsers(users);
+        setWarning({status: true, message: `LocalStorage desabilitado \n ${e}`});
+        return;
+      } else if(users.length === 0) {
+        setInitialeValues(usersType);
+        setError({status: true, message: `${e} \n Ocorreu um erro no banco de dados`});
+      } 
     }
+
   }, []);
   
   return (
     <Style.MainAdmin>
-      <ScreenInfo datas={initialeValues} titleMain='Tipos de usuários:' error={error}/>
+      <ScreenInfo datas={initialeValues} titleMain='Tipos de usuários:' error={error} warning={warning}/>
+
     </Style.MainAdmin>
   )
 }
