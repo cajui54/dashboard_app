@@ -1,28 +1,25 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
-interface IUser {
-    id: string,
-    firstName: string,
-    lastName: string,
-    login: string,
-    password: string,
-    ra: string,
-    status: boolean,
-    type: string
+import {IUser} from '../../interfaces/User';
+interface ISliceUser {
+    login: IUser | {};
+    users: [] | {id: string}[];
 }
-
-const initialValue: IUser[] | {} = {};
+const initialValue: ISliceUser = {
+    login: {},
+    users: []
+};
 
 const sliceUser =  createSlice({
     name: 'user',
     initialState: initialValue,
     reducers: {
-        getAllUsers() {
-
+        allUsers(state: ISliceUser, {payload}: PayloadAction<{id: string}[]>): any {  
+            state.users = payload;
+            return state;
         },
         loginUser(state, {payload}: PayloadAction<{id: string}>) {  
             if(payload) {
-                state = payload;
+                state.login = payload;
             }
             return state;
         }
@@ -30,7 +27,7 @@ const sliceUser =  createSlice({
 
 });
 
-export const {getAllUsers, loginUser} = sliceUser.actions;
+export const {allUsers, loginUser} = sliceUser.actions;
 
 export const selectorUser = (state: any) => state.user;
 

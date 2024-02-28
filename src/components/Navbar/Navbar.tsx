@@ -13,7 +13,7 @@ import * as Style from './Navbar.css';
 
 const Navbar = () => {
   const {accessState, dispatchAccess} = useAccessSystem();
-  const { user } = useStorage();
+  const { user } = useStorage('user');
   const dataUser = useSelector(selectorUser);
     
   useEffect(() => {

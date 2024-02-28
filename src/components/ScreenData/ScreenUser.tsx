@@ -6,7 +6,7 @@ import LoadingMessage from '../Messages/Loading/LoadingMessage';
 import useStorage from '../../hooks/useStorage';
 
 const ScreenUser = () => {
-  const {user, loading } = useStorage();
+  const {user, loading } = useStorage('user');
   
   return (
     <Style.MainScreen>

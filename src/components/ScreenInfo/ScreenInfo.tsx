@@ -3,8 +3,9 @@ import { FaUsers, FaUserTie, FaUser, FaUserCog } from "react-icons/fa";
 import { IScreenInfo } from '../../interfaces/ScreenInfo';
 
 interface DatasListProps  {
-  datas: IScreenInfo[]
-  titleMain: string
+  datas: IScreenInfo[],
+  titleMain: string,
+  error: {status: boolean, message: string},
 }
 const ScreenInfo = ({datas, titleMain}: DatasListProps) => {
     
