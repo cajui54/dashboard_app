@@ -5,6 +5,6 @@ export interface IUser {
     ra: string,
     firstName: string,
     lastName: string,
-    status: string,
+    status: boolean,
     type: string,
 }

@@ -3,6 +3,7 @@ import { createGlobalStyle } from "styled-components";
 const GlobalStyle = createGlobalStyle`
     :root {
         --main-bg-color--secundary: #0f172a;
+        --color-green: #14b8a6;
     }
     html {
         font-size: 62.5%;
@@ -37,6 +38,20 @@ const GlobalStyle = createGlobalStyle`
         transform: scale(1.3);
         transition: all .9s ease-in-out;
         color: #fff !important;
+    }
+    .buttonActive {
+        background-color: #22c55e;
+        color: #fff;
+    }
+    .buttonblock {
+        background-color: #ef4444;
+        color: #fff;
+    }
+    .buttonDelete {
+        background-color: #ef4444;
+    }
+    .buttonEdit {
+        background-color: #f59e0b;
     }
 `
 export default GlobalStyle;

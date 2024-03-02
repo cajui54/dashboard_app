@@ -4,7 +4,7 @@ export const MainScreenInfo = styled.div`
     min-height: 2rem;
     width: 70%;
     margin: 3rem 2rem;
-    background-color: var(--main-bg-color--secundary);;
+    background-color: var(--main-bg-color--secundary);
     border-radius: 1rem;
     padding-bottom: 1rem;
     

@@ -9,6 +9,7 @@ import { allUsers, selectorUser } from "../../redux/slices/sliceUser";
 import { usersType } from "../../config/configAdmin";
 import { IDefaultStates } from '../../interfaces/Admin';
 import { initialeStatesMessage } from '../../config/configAdmin';
+import SearchUser from './Search/SearchUser';
 
 
 const Admin = () => {
@@ -83,6 +84,15 @@ const Admin = () => {
     <Style.MainAdmin>
       <ScreenInfo datas={initialeValues} titleMain='Tipos de usuários:' error={error} warning={warning}/>
 
+      <main>
+        <Style.ContainerTable>
+          <SearchUser/>
+        </Style.ContainerTable>
+
+        <form>
+          <h1>Hello</h1>
+        </form>
+      </main>
     </Style.MainAdmin>
   )
 }

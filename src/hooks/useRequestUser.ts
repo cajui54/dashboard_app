@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import { IMessage } from '../interfaces/Messages';
 
 const useRequestUser = () => {
+  
   const navigateTo = useNavigate();
   const dispatchUser = useDispatch();
   const firebaseApp: FirebaseApp = initializeApp(firebaseConfig);
