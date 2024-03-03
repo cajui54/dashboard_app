@@ -40,7 +40,7 @@ const Navbar = () => {
         <p>Financeiro</p>
       </NavLink>}
 
-      {accessState.stoch && <NavLink to='/main/storage'>
+      {accessState.stock && <NavLink to='/main/storage'>
         <FaBoxes />
         <p>Estoque</p>
       </NavLink>}

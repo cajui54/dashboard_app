@@ -2,25 +2,25 @@ import {useReducer} from 'react';
 interface IAccessSystem {
     home: boolean,
     finance: boolean,
-    stoch: boolean,
+    stock: boolean,
     admin: boolean,
 }
 const adminAccess = {
     home: true,
     finance: true,
-    stoch: true,
+    stock: true,
     admin: true,
 }
 const userAccess = {
     home: true,
     finance: false,
-    stoch: true,
+    stock: true,
     admin: false,
 }
 const financeAccess = {
     home: true,
     finance: true,
-    stoch: true,
+    stock: true,
     admin: false,
 }
 type userType = 'default' | 'admin' | 'financer';
@@ -31,7 +31,7 @@ const accessSystemReducer = (state: IAccessSystem, payload: string) => {
             return userAccess;
         case 'admin' :
             return adminAccess;
-        case 'financer' : 
+        case 'finance' : 
             return financeAccess;
         default :
             return state;

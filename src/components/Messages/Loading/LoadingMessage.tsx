@@ -5,7 +5,7 @@ import * as Style from './Loading.css';
 
 const LoadingMessage = ({text}: IProps) => {
   return (
-    <Style.LoadingMain>
+    <Style.LoadingMain className="loadindComponent">
       {text && <p>
         <FaArrowsRotate />
         {text}

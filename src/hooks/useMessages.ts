@@ -21,8 +21,7 @@ const reducerMessage = (state: IMessage, action: IMessage): any => {
 }
 const useMessages = () => {
     const [messageComponent, dispatchMessage] = useReducer(reducerMessage, intialeStatus);
-    console.log(messageComponent);
-
+    
   return {messageComponent, dispatchMessage}
 }
 

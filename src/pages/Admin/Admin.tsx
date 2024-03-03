@@ -10,6 +10,8 @@ import { usersType } from "../../config/configAdmin";
 import { IDefaultStates } from '../../interfaces/Admin';
 import { initialeStatesMessage } from '../../config/configAdmin';
 import SearchUser from './Search/SearchUser';
+import TableContainer from '../../components/Table/TableContainer';
+import ErrorMessage from '../../components/Messages/Error/ErrorMessage';
 
 
 const Admin = () => {
@@ -18,7 +20,9 @@ const Admin = () => {
   const [warning, setWarning] = useState<IDefaultStates>(initialeStatesMessage);
   const dispatch = useDispatch();
   const [initialeValues, setInitialeValues] = useState<IScreenInfo[]>(usersType);
-  const {datas: datasUser} = useRequestUser() ;
+  const {datas: datasUser, isLoading} = useRequestUser() ;
+  
+  
   const { saveAllDatas } = useStorage('users');
 
   const getAmountUsers = <T extends {type: string}>(_datas: T[]) => {
@@ -27,6 +31,7 @@ const Admin = () => {
       else if(data.type === 'default') data.amount = _datas.filter((element) => element.type === data.type).length;
       else if(data.type === 'admin') data.amount = _datas.filter((element) => element.type === data.type).length;
       else if(data.type === 'stock') data.amount = _datas.filter((element) => element.type === data.type).length;
+      else if(data.type === 'finance') data.amount = _datas.filter((element) => element.type === data.type).length;
       return data
     });
     setInitialeValues(newValues);
@@ -87,6 +92,11 @@ const Admin = () => {
       <main>
         <Style.ContainerTable>
           <SearchUser/>
+          { datasUser ? (
+            <TableContainer datas={datasUser} isLoading={isLoading}/>
+          ): (
+            <ErrorMessage text={'Ocorreu um error no banco de dados!'}/>
+          )}
         </Style.ContainerTable>
 
         <form>
