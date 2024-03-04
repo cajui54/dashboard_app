@@ -3,8 +3,8 @@ import * as Style  from './Table.css';
 import { FaUserPen } from "react-icons/fa6";
 import { BiSolidUserX } from "react-icons/bi";
 import { IMessage } from '../../interfaces/Messages';
-import useAccessSystem from '../../hooks/useAccessSystem';
 import LoadingMessage from '../Messages/Loading/LoadingMessage';
+import useRequestUser from '../../hooks/useRequestUser';
 
 interface IPropsTable {
     [index: string]: string | boolean;
@@ -12,10 +12,11 @@ interface IPropsTable {
 interface IProps {
     datas: IPropsTable[],
     isLoading: IMessage,
+    deleteUser: (id: string) => void,
 }
 
-const TableContainer = ({datas, isLoading}:  IProps) => {
-    const t = true;
+const TableContainer = ({datas, isLoading, deleteUser}:  IProps) => {
+    
     const translatedUser = (_user: string): string => {
         
         switch(_user) {
@@ -34,9 +35,14 @@ const TableContainer = ({datas, isLoading}:  IProps) => {
     const handleEditUser = (_id: string) => {
 
     }
-    const handleDeleteUser = (_id: string) => {
+    const handleDeleteUser = (_id: string, _fistName: string) => {
+        if(window.confirm(`Tem certeza que deseja deletar o(a) usuário(a) ${_fistName}?`)) {
+            deleteUser(_id);  
+        }
         
     }
+    
+    
   return (
     <Style.MainTable>
       <h2>Usuários Cadastrados no Sistema</h2>
@@ -71,7 +77,7 @@ const TableContainer = ({datas, isLoading}:  IProps) => {
                         </td>
                         <td className='actionsButton'>
                             <button title='Editar Usuário' onClick={() => handleEditUser(data.id.toString())}><FaUserPen/></button>
-                            <button title='Excluir Usuário' onClick={() => handleDeleteUser(data.id.toString())}><BiSolidUserX/></button>
+                            <button title='Excluir Usuário' onClick={() => handleDeleteUser(data.id.toString(), data.firstName.toString())}><BiSolidUserX/></button>
                         </td>
                         </tr>
                     ))}

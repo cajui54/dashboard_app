@@ -2,7 +2,7 @@ import {useState, useEffect } from 'react'
 import { useDispatch } from 'react-redux';
 import { loginUser } from '../redux/slices/sliceUser';
 import { FirebaseApp, initializeApp } from "firebase/app";
-import { collection, getFirestore, getDocs } from "firebase/firestore";
+import { collection, getFirestore, getDocs, doc, deleteDoc } from "firebase/firestore";
 import { firebaseConfig } from '../config/configFirebase';
 import { ILoginInputs } from '../interfaces/Inputs';
 import { messagesConfig } from '../config/configMessage';
@@ -14,12 +14,24 @@ const useRequestUser = () => {
   const navigateTo = useNavigate();
   const dispatchUser = useDispatch();
   const firebaseApp: FirebaseApp = initializeApp(firebaseConfig);
+  const [callFirebase, setCallFirebase] = useState<boolean>(false);
   const [datas, setDatas] = useState<{id: string}[] | null>(null);
   const [isLoading, setIsLoading] = useState<IMessage>(messagesConfig.loading);
   const [error, setErros] = useState<IMessage>(messagesConfig.defaultConfig);
   const db = getFirestore(firebaseApp);
   
     const userCollectionRef = collection(db, 'users');
+
+    const deleteUser = async (_id: string) => {
+      try {
+        const userDoc = doc(db, 'users', _id);
+        await deleteDoc(userDoc);
+    
+        setCallFirebase(true);
+      } catch(e) {
+        alert('Ocorreu um error inesperado!');
+      }
+    }
 
     const findUser = async (user: ILoginInputs) => {
     
@@ -66,12 +78,13 @@ const useRequestUser = () => {
            } finally {
 
             setIsLoading(messagesConfig.defaultConfig);
-            
+            setCallFirebase(false);
            }
             
         }   
         getUsers();
-    }, []);
+        
+    }, [callFirebase]);
     
     
   return {
@@ -80,6 +93,7 @@ const useRequestUser = () => {
     isLoading,
     setIsLoading,
     error,
+    deleteUser
   };
 }
 

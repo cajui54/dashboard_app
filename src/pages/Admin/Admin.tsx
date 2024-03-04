@@ -20,7 +20,7 @@ const Admin = () => {
   const [warning, setWarning] = useState<IDefaultStates>(initialeStatesMessage);
   const dispatch = useDispatch();
   const [initialeValues, setInitialeValues] = useState<IScreenInfo[]>(usersType);
-  const {datas: datasUser, isLoading} = useRequestUser() ;
+  const {datas: datasUser, isLoading, deleteUser} = useRequestUser() ;
   
   
   const { saveAllDatas } = useStorage('users');
@@ -84,6 +84,7 @@ const Admin = () => {
     }
 
   }, [datasUser]);
+
   
   return (
     <Style.MainAdmin>
@@ -93,7 +94,7 @@ const Admin = () => {
         <Style.ContainerTable>
           <SearchUser/>
           { datasUser ? (
-            <TableContainer datas={datasUser} isLoading={isLoading}/>
+            <TableContainer datas={datasUser} isLoading={isLoading} deleteUser={deleteUser}/>
           ): (
             <ErrorMessage text={'Ocorreu um error no banco de dados!'}/>
           )}
