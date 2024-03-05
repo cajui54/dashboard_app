@@ -13,5 +13,7 @@
 
 ## Tela para autenticação de usuário
 
+### Link da Aplicação abaixo:
 
-![login](https://github.com/cajui54/dashboard_app/assets/42698730/9e5b6d02-767b-4694-9347-dfdffd280b8b)
+https://d-kebras-dashboard.vercel.app/
+
