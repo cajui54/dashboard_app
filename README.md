@@ -11,13 +11,7 @@
 - Styled-Components
 - Banco de Dados - Firebase
 
-ra ZZZZ
-firstName Maria
-lastName Ana
-login namaria
-password 123456
-status
-type: default
+## Tela para autenticação de usuário
 
 
-
+![login](https://github.com/cajui54/dashboard_app/assets/42698730/9e5b6d02-767b-4694-9347-dfdffd280b8b)
