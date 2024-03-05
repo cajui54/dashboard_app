@@ -4,9 +4,18 @@ import { FaUserPen } from "react-icons/fa6";
 import { BiSolidUserX } from "react-icons/bi";
 import *  as Style from './ResultSearch.css';
 import { useEffect, useState } from 'react';
+import useRequestUser from '../../hooks/useRequestUser';
 
 const ResultSearch = (datas: {id: string} | IUser) => {
+    const {deleteUser} = useRequestUser();
     const [statusUser, SetStatusUser] = useState<boolean>();
+    
+    const handleDeleteUser = (_id: string, firstName: string) => {
+      if(window.confirm(`Tem certeza que deseja excluir ${firstName}?`)) {
+        deleteUser(_id); 
+      }
+
+    }
 
     useEffect(() => {
       'status' in datas && SetStatusUser(datas.status);
@@ -60,7 +69,14 @@ const ResultSearch = (datas: {id: string} | IUser) => {
 
           <li>
             <button className='buttonEdit' title='editar usuário'><FaUserPen/></button>
-            <button className='buttonDelete' title='deletar usuário'><BiSolidUserX /></button>
+
+            { 'firstName'in datas && (<button 
+              className='buttonDelete'
+              title='deletar usuário'
+              onClick={() => handleDeleteUser(datas.id, datas.firstName)}
+              >
+                <BiSolidUserX />
+              </button>)}
           </li>
         </ul>
       )}

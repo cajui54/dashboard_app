@@ -3,17 +3,19 @@ import {IUser} from '../../interfaces/User';
 interface ISliceUser {
     login: IUser | {};
     users: [] | {id: string}[];
+    callFirebase: boolean;
 }
 const initialValue: ISliceUser = {
     login: {},
-    users: []
+    users: [],
+    callFirebase: false,
 };
 
 const sliceUser =  createSlice({
     name: 'user',
     initialState: initialValue,
     reducers: {
-        allUsers(state: ISliceUser, {payload}: PayloadAction<{id: string}[]>): any {  
+        allUsers(state: ISliceUser, {payload}: PayloadAction<{id: string}[]>) {  
             state.users = payload;
             return state;
         },
@@ -22,12 +24,16 @@ const sliceUser =  createSlice({
                 state.login = payload;
             }
             return state;
+        },
+        setCallFetchUser (state, {payload}: PayloadAction<boolean>) {
+            state.callFirebase = payload
+            return state;
         }
     },
 
 });
 
-export const {allUsers, loginUser} = sliceUser.actions;
+export const {allUsers, loginUser, setCallFetchUser} = sliceUser.actions;
 
 export const selectorUser = (state: any) => state.user;
 

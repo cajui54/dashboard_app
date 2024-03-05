@@ -10,12 +10,17 @@ import { messagesConfig } from '../../../config/configMessage';
 import ErrorMessage from '../../../components/Messages/Error/ErrorMessage';
 import ResultSearch from '../../../components/ResultSearch/ResultSearch';
 import {IUser} from '../../../interfaces/User';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectorCallback } from '../../../redux/slices/sliceCallback';
+import { setCloseResultUser } from '../../../redux/slices/sliceCallback';
 
 interface IInputSearch {
   search: string,
 }
 
 const SearchUser = () => {
+  const DispatchCallback = useDispatch();
+  const { closeResult } = useSelector(selectorCallback);
   const [messageError, setMessageError] = useState<IMessage>(messagesConfig.defaultConfig);
   const { datas: datasUsers } = useRequestUser();
   const { register, handleSubmit, formState: {errors}} = useForm<IInputSearch>();
@@ -33,8 +38,8 @@ const SearchUser = () => {
         
         if(getUser) {
           setShowUser({...getUser});
-          console.log(getUser);
           
+          DispatchCallback(setCloseResultUser(true));
           setMessageError(messagesConfig.defaultConfig);
         } else {
           throw Error('Usuário não encontrado!');
@@ -81,7 +86,7 @@ const SearchUser = () => {
 
       </form>
       { messageError.status && <ErrorMessage text={messageError.message}/> }
-      {showUser && <ResultSearch {...showUser}/>}
+      { closeResult && showUser && <ResultSearch {...showUser}/>}
     </Style.SearchMain>
   )
 }

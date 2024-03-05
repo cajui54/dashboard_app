@@ -60,7 +60,7 @@ function Login() {
   
   useEffect(() => {
     if(submit) {
-      console.log(error.status);
+
       if(!error.status) callLoading();
       setSubmit(false);
     }

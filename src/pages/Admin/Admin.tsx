@@ -6,6 +6,7 @@ import useRequestUser from "../../hooks/useRequestUser";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { allUsers, selectorUser } from "../../redux/slices/sliceUser";
+import { selectorCallback } from '../../redux/slices/sliceCallback';
 import { usersType } from "../../config/configAdmin";
 import { IDefaultStates } from '../../interfaces/Admin';
 import { initialeStatesMessage } from '../../config/configAdmin';
@@ -16,15 +17,14 @@ import ErrorMessage from '../../components/Messages/Error/ErrorMessage';
 
 const Admin = () => {
   const {users} = useSelector(selectorUser);
+  const {callFetchUser} = useSelector(selectorCallback);
   const [error, setError] = useState<IDefaultStates>(initialeStatesMessage);
   const [warning, setWarning] = useState<IDefaultStates>(initialeStatesMessage);
   const dispatch = useDispatch();
   const [initialeValues, setInitialeValues] = useState<IScreenInfo[]>(usersType);
   const {datas: datasUser, isLoading, deleteUser} = useRequestUser() ;
-  
-  
   const { saveAllDatas } = useStorage('users');
-
+  
   const getAmountUsers = <T extends {type: string}>(_datas: T[]) => {
     const newValues = initialeValues.map((data) => {
       if(data.type === 'amount') data.amount = _datas.length;
@@ -36,7 +36,8 @@ const Admin = () => {
     });
     setInitialeValues(newValues);
   }
-
+  
+  
   useEffect(() => {
   try {
     if(sessionStorage) {
@@ -59,7 +60,7 @@ const Admin = () => {
   }, [datasUser]);
 
   useEffect(() => {
- 
+    
     try {
       if(sessionStorage) {
         const datas = sessionStorage.getItem('users');

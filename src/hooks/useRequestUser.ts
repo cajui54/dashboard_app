@@ -1,8 +1,11 @@
-import {useState, useEffect } from 'react'
-import { useDispatch } from 'react-redux';
-import { loginUser } from '../redux/slices/sliceUser';
-import { FirebaseApp, initializeApp } from "firebase/app";
 import { collection, getFirestore, getDocs, doc, deleteDoc } from "firebase/firestore";
+import { FirebaseApp, initializeApp } from "firebase/app";
+import {useState, useEffect } from 'react';
+//redux
+import { useDispatch, useSelector } from 'react-redux';
+import { selectorCallback } from '../redux/slices/sliceCallback';
+import { setCallbackUser, setCloseResultUser } from '../redux/slices/sliceCallback';
+import { loginUser } from '../redux/slices/sliceUser';
 import { firebaseConfig } from '../config/configFirebase';
 import { ILoginInputs } from '../interfaces/Inputs';
 import { messagesConfig } from '../config/configMessage';
@@ -13,8 +16,9 @@ const useRequestUser = () => {
   
   const navigateTo = useNavigate();
   const dispatchUser = useDispatch();
+  const dispatchCallbackUser = useDispatch();
+  const {callFetchUser, closeResult} = useSelector(selectorCallback);
   const firebaseApp: FirebaseApp = initializeApp(firebaseConfig);
-  const [callFirebase, setCallFirebase] = useState<boolean>(false);
   const [datas, setDatas] = useState<{id: string}[] | null>(null);
   const [isLoading, setIsLoading] = useState<IMessage>(messagesConfig.loading);
   const [error, setErros] = useState<IMessage>(messagesConfig.defaultConfig);
@@ -23,11 +27,16 @@ const useRequestUser = () => {
     const userCollectionRef = collection(db, 'users');
 
     const deleteUser = async (_id: string) => {
+
       try {
         const userDoc = doc(db, 'users', _id);
         await deleteDoc(userDoc);
-    
-        setCallFirebase(true);
+        
+        dispatchCallbackUser(setCallbackUser(true));
+        dispatchCallbackUser(setCloseResultUser(false));
+
+        alert('O usuário foi cadastrado com sucesso!');
+
       } catch(e) {
         alert('Ocorreu um error inesperado!');
       }
@@ -71,6 +80,7 @@ const useRequestUser = () => {
             
             setDatas(datasFirestore);
             
+            
            } catch(e) {
 
             setErros({status: true, message: `${e}`});
@@ -78,13 +88,14 @@ const useRequestUser = () => {
            } finally {
 
             setIsLoading(messagesConfig.defaultConfig);
-            setCallFirebase(false);
+            dispatchCallbackUser(setCallbackUser(false));
+            
            }
             
         }   
         getUsers();
         
-    }, [callFirebase]);
+    }, [callFetchUser]);
     
     
   return {
@@ -93,7 +104,8 @@ const useRequestUser = () => {
     isLoading,
     setIsLoading,
     error,
-    deleteUser
+    deleteUser,
+    
   };
 }
 
