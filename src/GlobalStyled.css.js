@@ -4,6 +4,7 @@ const GlobalStyle = createGlobalStyle`
     :root {
         --main-bg-color--secundary: #0f172a;
         --color-green: #14b8a6;
+        --btn-edit: #fb923c;
     }
     html {
         font-size: 62.5%;

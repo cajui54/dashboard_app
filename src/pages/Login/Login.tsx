@@ -1,5 +1,5 @@
 import { FocusEvent, useEffect, useState, useRef, FormEvent} from 'react';
-import { FaEyeSlash } from "react-icons/fa";
+import { FaEyeSlash, FaLinkedin  } from "react-icons/fa";
 import { IoEyeSharp } from "react-icons/io5";
 import {useForm} from 'react-hook-form';
 import * as Style from './Login.css';
@@ -130,6 +130,14 @@ function Login() {
           { error.status && <ErrorMessage text={error.message}/>}
 
         </Style.Form>
+
+        <Style.LinkContact>
+            
+            <a href="https://www.linkedin.com/in/jacksoncajui/" target="_blank">
+              <FaLinkedin/>
+              Caso queira testar entre em contatos: 
+            </a>
+        </Style.LinkContact>
 
       </Style.FormContainer>
     </Style.LoginMain>

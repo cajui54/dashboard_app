@@ -13,6 +13,7 @@ import { initialeStatesMessage } from '../../config/configAdmin';
 import SearchUser from './Search/SearchUser';
 import TableContainer from '../../components/Table/TableContainer';
 import ErrorMessage from '../../components/Messages/Error/ErrorMessage';
+import FormUser from '../../components/Forms/FormUser';
 
 
 const Admin = () => {
@@ -101,9 +102,7 @@ const Admin = () => {
           )}
         </Style.ContainerTable>
 
-        <form>
-          <h1>Hello</h1>
-        </form>
+        <FormUser/>
       </main>
     </Style.MainAdmin>
   )
