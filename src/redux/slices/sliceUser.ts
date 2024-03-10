@@ -28,12 +28,18 @@ const sliceUser =  createSlice({
         setCallFetchUser (state, {payload}: PayloadAction<boolean>) {
             state.callFirebase = payload
             return state;
+        },
+        getIdUser (state, {payload}:PayloadAction<string>) {
+            state.login = {id: payload};
+            console.log(state.login);
+            
+            return state
         }
     },
 
 });
 
-export const {allUsers, loginUser, setCallFetchUser} = sliceUser.actions;
+export const {allUsers, loginUser, setCallFetchUser, getIdUser} = sliceUser.actions;
 
 export const selectorUser = (state: any) => state.user;
 

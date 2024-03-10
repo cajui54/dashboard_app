@@ -9,7 +9,6 @@ const useRandomValues = () => {
         let valuesRandom: string = '';
         let count = 0;
         const getRA = datas?.map(data => 'ra' in data && data.ra);
-        console.log(getRA);
   
         do{
           while(count < 4) {
