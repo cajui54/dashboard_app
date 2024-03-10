@@ -11,13 +11,9 @@
 - Styled-Components
 - Banco de Dados - Firebase
 
-ra ZZZZ
-firstName Maria
-lastName Ana
-login namaria
-password 123456
-status
-type: default
+## Tela para autenticação de usuário
 
+### Link da Aplicação abaixo:
 
+https://d-kebras-dashboard.vercel.app/
 
