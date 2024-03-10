@@ -41,7 +41,7 @@ const FormUser = () => {
     const [editUser, setEditUser] = useState(optionValues.addUser);
     const [loading, setLoading] = useState<IMessage>(messagesConfig.defaultConfig);
     const [error, setError] = useState<IMessage>(messagesConfig.defaultConfig);
-    formInputUser.ra = handleValueRandom().toUpperCase();
+    formInputUser.ra = `${handleValueRandom().toUpperCase()}`;
     formInputUser.type = 'default';
 
     const onSubmitForm = async (data: IUserInputs) => {

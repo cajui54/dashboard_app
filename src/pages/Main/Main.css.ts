@@ -83,8 +83,8 @@ export const SelectContainer = styled.div`
         color: #fff;
         letter-spacing: 3px;
         outline: none;
+        cursor: pointer;
     }
-
     label span {
         position: relative;
         left: 1rem;
