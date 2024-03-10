@@ -37,7 +37,7 @@ const formInputUser: IUserInputs = {
 const FormUser = () => {
     const {datas, addNewUser} = useRequestUser();
     const { handleValueRandom } = useRandomValues();
-    const [inputDatas,  ] = useState({
+    const [inputDatas,  setInputDatas] = useState({
       login: '',
       password: '',
       ra: handleValueRandom().toUpperCase(),
@@ -61,10 +61,10 @@ const FormUser = () => {
       } finally {
         setInterval(() => {
           setLoading(messagesConfig.defaultConfig);
-          formInputUser.ra = handleValueRandom().toUpperCase();
+          inputDatas.ra = handleValueRandom().toUpperCase();
           resetField('firstName');
           resetField('lastName');
-          formInputUser.type = 'default';
+          inputDatas.type = 'default';
           resetField('login');
           resetField('password');
         }, 2000);
@@ -73,6 +73,10 @@ const FormUser = () => {
     }
     const handleReset = () => {
       clearErrors();
+      setInputDatas((prev) => {
+        prev.ra = handleValueRandom().toUpperCase();
+        return prev;
+      });
     }
  
     const prevSubmit = (event: FormEvent) => {
