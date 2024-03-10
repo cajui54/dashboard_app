@@ -37,12 +37,19 @@ const formInputUser: IUserInputs = {
 const FormUser = () => {
     const {datas, addNewUser} = useRequestUser();
     const { handleValueRandom } = useRandomValues();
-    const {register, handleSubmit, resetField , clearErrors, formState: {errors}} = useForm<IUserInputs>({defaultValues: {...formInputUser}});
+    const [inputDatas,  ] = useState({
+      login: '',
+      password: '',
+      ra: handleValueRandom().toUpperCase(),
+      firstName: '',
+      lastName: '',
+      status: false,
+      type: 'default',
+    })
+    const {register, handleSubmit, resetField , clearErrors, formState: {errors}} = useForm<IUserInputs>({defaultValues: {...inputDatas}});
     const [editUser, setEditUser] = useState(optionValues.addUser);
     const [loading, setLoading] = useState<IMessage>(messagesConfig.defaultConfig);
     const [error, setError] = useState<IMessage>(messagesConfig.defaultConfig);
-    formInputUser.ra = `${handleValueRandom().toUpperCase()}`;
-    formInputUser.type = 'default';
 
     const onSubmitForm = async (data: IUserInputs) => {
       try{
@@ -72,6 +79,9 @@ const FormUser = () => {
       event.preventDefault();
       handleSubmit(onSubmitForm)();
     }
+    useEffect(() => {
+      
+    }, [inputDatas]);
 
   return (
     <Styles.MainForm>
