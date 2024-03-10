@@ -3,6 +3,7 @@ import styled from "styled-components";
 export const MainTable = styled.section`
     margin-top: 5rem;
     min-height: 30rem;
+    width: 100%;
     h2 {
         font-size: 3rem;
         margin: 3rem 2rem;

@@ -8,3 +8,5 @@ export interface IUser {
     status: boolean,
     type: string,
 }
+
+export type typesKeys = 'login'| 'password' | 'ra' | 'firstName' | 'lastName' | 'status' | 'type';

@@ -1,4 +1,4 @@
-import { collection, getFirestore, getDocs, doc, deleteDoc } from "firebase/firestore";
+import { collection, getFirestore, getDocs, doc, deleteDoc, addDoc} from "firebase/firestore";
 import { FirebaseApp, initializeApp } from "firebase/app";
 import {useState, useEffect } from 'react';
 //redux
@@ -11,6 +11,7 @@ import { ILoginInputs } from '../interfaces/Inputs';
 import { messagesConfig } from '../config/configMessage';
 import { useNavigate } from 'react-router-dom';
 import { IMessage } from '../interfaces/Messages';
+import { IUserInputs } from "../interfaces/Inputs";
 
 const useRequestUser = () => {
   
@@ -35,7 +36,7 @@ const useRequestUser = () => {
         dispatchCallbackUser(setCallbackUser(true));
         dispatchCallbackUser(setCloseResultUser(false));
 
-        alert('O usuário foi cadastrado com sucesso!');
+        alert('O usuário foi deletado com sucesso!');
 
       } catch(e) {
         alert('Ocorreu um error inesperado!');
@@ -64,6 +65,19 @@ const useRequestUser = () => {
 
       } catch(e) {
         setErros({status: true, message: `${e}`});
+      }
+      
+    }
+    
+    const addNewUser = async (datas: IUserInputs) => {
+      
+      try {  
+        await addDoc(userCollectionRef, datas);
+        
+        dispatchCallbackUser(setCallbackUser(true));
+        
+      } catch(e) {
+        alert(`Ocorreu um error inesperado! \n ${e}`);
       }
       
     }
@@ -105,7 +119,7 @@ const useRequestUser = () => {
     setIsLoading,
     error,
     deleteUser,
-    
+    addNewUser
   };
 }
 

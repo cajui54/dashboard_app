@@ -27,7 +27,17 @@ export const ContainerInfo = styled.div`
     }
 `
 
-export const Form = styled.div`
-
-
+export const Form = styled.form`
+    width: 90%;
+    margin: 1rem auto;
+    fieldset {
+        padding: 1rem 2rem;
+        border-radius: .5rem;
+        border: none;
+    }
+    fieldset legend {
+        font-size: 1rem;
+        margin-bottom: 1rem;
+    }
 `
+

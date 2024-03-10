@@ -5,3 +5,12 @@ export interface ILoginInputs {
     login: string,
     password: string,
 }
+export interface IUserInputs {
+    login: string,
+    password: string,
+    ra: string,
+    firstName: string,
+    lastName: string,
+    status: boolean,
+    type: string,
+}

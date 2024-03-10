@@ -12,6 +12,6 @@ export const MainAdmin = styled.div`
     }
 `
 export const ContainerTable = styled.div`
-    
-
+    width: 70%;
+    margin: 0 3rem;
 `

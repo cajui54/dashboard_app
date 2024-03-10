@@ -5,6 +5,8 @@ const GlobalStyle = createGlobalStyle`
         --main-bg-color--secundary: #0f172a;
         --color-green: #14b8a6;
         --btn-edit: #fb923c;
+        --color-green--dark: #10E180;
+        --color-black: #030712;
     }
     html {
         font-size: 62.5%;
@@ -54,5 +56,13 @@ const GlobalStyle = createGlobalStyle`
     .buttonEdit {
         background-color: #f59e0b;
     }
+    .isRequiredInput {
+        background-color: #fecaca !important;
+        border: .2rem solid #ef4444 !important;
+    }
+    .isRequiredLable {
+        color: #ef4444 !important;
+    }
+
 `
 export default GlobalStyle;
