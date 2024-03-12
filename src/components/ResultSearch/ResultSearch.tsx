@@ -5,8 +5,14 @@ import { BiSolidUserX } from "react-icons/bi";
 import *  as Style from './ResultSearch.css';
 import { useEffect, useState } from 'react';
 import useRequestUser from '../../hooks/useRequestUser';
+import { useDispatch } from 'react-redux';
+import { getIdUser } from '../../redux/slices/sliceUser';
+import { setCloseResultUser } from '../../redux/slices/sliceCallback';
 
 const ResultSearch = (datas: {id: string} | IUser) => {
+  
+    const dispatch = useDispatch();
+    const dispatchCallbackUser = useDispatch();
     const {deleteUser} = useRequestUser();
     const [statusUser, SetStatusUser] = useState<boolean>();
     
@@ -15,6 +21,11 @@ const ResultSearch = (datas: {id: string} | IUser) => {
         deleteUser(_id); 
       }
 
+    }
+    const handleEditUser = (_id: string) => {
+
+      dispatch(getIdUser({status: true, id: _id}));
+      dispatchCallbackUser(setCloseResultUser(false));
     }
 
     useEffect(() => {
@@ -68,7 +79,13 @@ const ResultSearch = (datas: {id: string} | IUser) => {
             )}
 
           <li>
-            <button className='buttonEdit' title='editar usuário'><FaUserPen/></button>
+            <button
+              className='buttonEdit'
+              title='editar usuário'
+              onClick={() => handleEditUser(datas.id)}
+              >
+                <FaUserPen/>
+              </button>
 
             { 'firstName'in datas && (<button 
               className='buttonDelete'

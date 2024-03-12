@@ -34,7 +34,7 @@ const sliceUser =  createSlice({
         getIdUser (state, {payload}:PayloadAction<{status: boolean , id: string}>) {
 
             state.editUser = payload;
-        
+            
             return state
         }
     },

@@ -1,4 +1,4 @@
-import { collection, getFirestore, getDocs, doc, deleteDoc, addDoc} from "firebase/firestore";
+import { collection, getFirestore, getDocs, doc, deleteDoc, addDoc, updateDoc, setDoc} from "firebase/firestore";
 import { FirebaseApp, initializeApp } from "firebase/app";
 import {useState, useEffect } from 'react';
 //redux
@@ -68,6 +68,21 @@ const useRequestUser = () => {
       }
       
     }
+    const updateUser = async <T extends {id: string}>(user: T) => {
+      
+      try {
+        const userDoc = doc(db, 'users', user.id);
+        
+        await updateDoc(userDoc, user);
+
+      } catch(e) {
+        setErros({status: true, message: `${e}`});
+      } finally {
+        dispatchCallbackUser(setCallbackUser(true));
+        alert('Usuário(a) atualizado com sucesso!');
+      }
+      
+    }
     
     const addNewUser = async (datas: IUserInputs) => {
       
@@ -119,7 +134,8 @@ const useRequestUser = () => {
     setIsLoading,
     error,
     deleteUser,
-    addNewUser
+    addNewUser,
+    updateUser,
   };
 }
 

@@ -13,8 +13,9 @@ import { messagesConfig } from '../../config/configMessage';
 import { IMessage } from '../../interfaces/Messages';
 import ErrorMessage from '../Messages/Error/ErrorMessage';
 import SucessMessage from '../Messages/Sucess/SucessMessage';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { selectorUser } from '../../redux/slices/sliceUser';
+import { getIdUser } from '../../redux/slices/sliceUser';
 import { UserKey } from '../../interfaces/Inputs';
 
 interface IOptionUserForm {
@@ -25,12 +26,14 @@ const optionValues = {
     addUser: {type: 'add'},
     editUser: {type: 'edit'},
 }
-
+interface ITest{
+  [index: string]: string
+}
 
 const FormUser = () => {
     const { editUser: prevEditUser }= useSelector(selectorUser);
-    
-    const {datas, addNewUser} = useRequestUser();
+    const {datas, addNewUser, updateUser} = useRequestUser();
+    const dispatch = useDispatch();
     const { handleValueRandom } = useRandomValues();
     const [inputDatas,  setInputDatas] = useState<IUserInputs>({
       login: '',
@@ -51,8 +54,21 @@ const FormUser = () => {
       const keys = Object.keys(inputDatas);
       
       try{
+        if(!prevEditUser.status) {
+          await addNewUser(data);
 
-        await addNewUser(data);
+        } else {
+           const getUserById = datas && datas?.find(<T extends ITest>(user: T)=> user.id === prevEditUser.id);
+           
+           if(getUserById) {
+              const userEdit = {...data, id: getUserById.id};
+              updateUser(userEdit);
+              
+            }
+            
+          dispatch(getIdUser({status: false, id: ''}));
+        }
+        
         setLoading({status: true, message: 'Cadastrando...'});
         
       } catch (e) {
@@ -69,7 +85,8 @@ const FormUser = () => {
     
     const handleReset = () => {
       clearErrors();
-      setCallFetch(true);
+      setCallFetch(false);
+      dispatch(getIdUser({status: false, id: ''}));
       
     }
  
@@ -77,6 +94,7 @@ const FormUser = () => {
       event.preventDefault();
       handleSubmit(onSubmitForm)();
     }
+
     useEffect(() => {
       const prevEditForm = () => {
         const userFound = datas && datas.find(<T extends {id: string}>(user: T) => 'id' in user && user.id === prevEditUser.id);
@@ -94,7 +112,9 @@ const FormUser = () => {
 
       }
       prevEditUser.status && prevEditForm();
+      !prevEditUser.status && setCallFetch(true);
     }, [prevEditUser]);
+
     useEffect(() => {
       
       try {
@@ -208,9 +228,12 @@ const FormUser = () => {
                       required: true,
                       minLength: 6,
                       validate: (value) => {
-                        const getLogins = datas?.map(user => 'login' in user && user.login);
+                        if(!prevEditUser.status) {
+                          const getLogins = datas?.map(user => 'login' in user && user.login);
 
-                        return getLogins?.includes(value) !== true;
+                          return getLogins?.includes(value) !== true;
+                        }
+                       
                       }
                     })}
                   />
@@ -244,7 +267,12 @@ const FormUser = () => {
         </fieldset>
 
         <MainStyles.ContainerButtons>
-          {!loading.status && <button className={!prevEditUser.type ?'editButton' : ''} type='submit'>Confirmar</button>}
+          {!loading.status && <button
+            className={prevEditUser.status ? 'editButton' : '' }
+            type='submit'>
+              {!prevEditUser.status ? 'Confirmar' : 'Editar'}
+            </button>}
+
           {loading.status && <button disabled>{loading.message}</button>}
           
           <button
