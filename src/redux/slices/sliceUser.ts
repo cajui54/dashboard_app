@@ -4,11 +4,13 @@ interface ISliceUser {
     login: IUser | {};
     users: [] | {id: string}[];
     callFirebase: boolean;
+    editUser: {status: boolean , id: string}
 }
 const initialValue: ISliceUser = {
     login: {},
     users: [],
     callFirebase: false,
+    editUser: {status: false , id: ''}
 };
 
 const sliceUser =  createSlice({
@@ -29,10 +31,10 @@ const sliceUser =  createSlice({
             state.callFirebase = payload
             return state;
         },
-        getIdUser (state, {payload}:PayloadAction<string>) {
-            state.login = {id: payload};
-            console.log(state.login);
-            
+        getIdUser (state, {payload}:PayloadAction<{status: boolean , id: string}>) {
+
+            state.editUser = payload;
+        
             return state
         }
     },

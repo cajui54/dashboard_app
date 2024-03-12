@@ -63,6 +63,9 @@ const GlobalStyle = createGlobalStyle`
     .isRequiredLable {
         color: #ef4444 !important;
     }
+    .editButton {
+        background-color: orange !important;
+    }
 
 `
 export default GlobalStyle;

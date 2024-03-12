@@ -14,3 +14,5 @@ export interface IUserInputs {
     status: boolean,
     type: string,
 }
+
+export type UserKey = 'login' | 'password' | 'ra' | 'firstName' | 'lastName' | 'status' | 'type';

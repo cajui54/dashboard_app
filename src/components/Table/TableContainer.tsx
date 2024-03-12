@@ -35,7 +35,7 @@ const TableContainer = ({datas, isLoading, deleteUser}:  IProps) => {
     }
 
     const handleEditUser = (_id: string) => {
-        dispatch(getIdUser(_id));
+        dispatch(getIdUser({status: true, id: _id}));
     }
     
     const handleDeleteUser = (_id: string, _fistName: string) => {

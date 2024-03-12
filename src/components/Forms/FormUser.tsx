@@ -13,7 +13,9 @@ import { messagesConfig } from '../../config/configMessage';
 import { IMessage } from '../../interfaces/Messages';
 import ErrorMessage from '../Messages/Error/ErrorMessage';
 import SucessMessage from '../Messages/Sucess/SucessMessage';
-import { typesKeys } from '../../interfaces/User';
+import { useSelector } from 'react-redux';
+import { selectorUser } from '../../redux/slices/sliceUser';
+import { UserKey } from '../../interfaces/Inputs';
 
 interface IOptionUserForm {
     type: string;
@@ -24,20 +26,13 @@ const optionValues = {
     editUser: {type: 'edit'},
 }
 
-const formInputUser: IUserInputs = {
-  login: '',
-  password: '',
-  ra: '',
-  firstName: '',
-  lastName: '',
-  status: false,
-  type: '',
-}
 
 const FormUser = () => {
+    const { editUser: prevEditUser }= useSelector(selectorUser);
+    
     const {datas, addNewUser} = useRequestUser();
     const { handleValueRandom } = useRandomValues();
-    const [inputDatas,  setInputDatas] = useState({
+    const [inputDatas,  setInputDatas] = useState<IUserInputs>({
       login: '',
       password: '',
       ra: handleValueRandom().toUpperCase(),
@@ -45,38 +40,37 @@ const FormUser = () => {
       lastName: '',
       status: false,
       type: 'default',
-    })
-    const {register, handleSubmit, resetField , clearErrors, formState: {errors}} = useForm<IUserInputs>({defaultValues: {...inputDatas}});
-    const [editUser, setEditUser] = useState(optionValues.addUser);
+    });
+    const {register, handleSubmit, setValue , clearErrors, resetField,formState: {errors}} = useForm<IUserInputs>({defaultValues: {...inputDatas}});
     const [loading, setLoading] = useState<IMessage>(messagesConfig.defaultConfig);
     const [error, setError] = useState<IMessage>(messagesConfig.defaultConfig);
-
+    const [callFetch, setCallFetch] = useState<boolean>(false);
+      
+    
     const onSubmitForm = async (data: IUserInputs) => {
+      const keys = Object.keys(inputDatas);
+      
       try{
+
         await addNewUser(data);
         setLoading({status: true, message: 'Cadastrando...'});
-     
+        
       } catch (e) {
-        setError({status: true, message: `Ocorreu um erro ineperado!`});
+        setError({status: true, message: `Ocorreu um erro inesperado!`});
       } finally {
-        setInterval(() => {
-          setLoading(messagesConfig.defaultConfig);
-          inputDatas.ra = handleValueRandom().toUpperCase();
-          resetField('firstName');
-          resetField('lastName');
-          inputDatas.type = 'default';
-          resetField('login');
-          resetField('password');
-        }, 2000);
+        setCallFetch(true);
+        setLoading({status: false, message: ''});
+        keys && keys.forEach((key: any) => {
+            key && resetField(key);
+        });
       }
       return ;
     }
+    
     const handleReset = () => {
       clearErrors();
-      setInputDatas((prev) => {
-        prev.ra = handleValueRandom().toUpperCase();
-        return prev;
-      });
+      setCallFetch(true);
+      
     }
  
     const prevSubmit = (event: FormEvent) => {
@@ -84,16 +78,46 @@ const FormUser = () => {
       handleSubmit(onSubmitForm)();
     }
     useEffect(() => {
-      
-    }, [inputDatas]);
+      const prevEditForm = () => {
+        const userFound = datas && datas.find(<T extends {id: string}>(user: T) => 'id' in user && user.id === prevEditUser.id);
 
+        if(userFound) {
+          const keys = Object.keys(userFound);
+          const values = Object.values(userFound);
+
+          keys.forEach((_, index) => {
+            const valueKey = keys[index] as UserKey;
+            setValue(`${valueKey}`, `${values[index]}`);
+          });
+          
+        }
+
+      }
+      prevEditUser.status && prevEditForm();
+    }, [prevEditUser]);
+    useEffect(() => {
+      
+      try {
+        const setValuesDefault = () => {
+          setValue('ra', handleValueRandom().toUpperCase());
+        }
+        setValuesDefault();
+      } catch (e)  {
+        setError({status: true, message: 'Ocorreu um erro inesperado! \n '+ e});
+      } finally {
+        setCallFetch(false);
+      }
+      
+      
+    }, [callFetch])
+  
   return (
     <Styles.MainForm>
       <Styles.ContainerInfo>
-            {editUser.type === 'add' ? <FaUserPlus className='addSvg'/> : <FaUserEdit className='editSvg'/>}
+            {!prevEditUser.status ? <FaUserPlus className='addSvg'/> : <FaUserEdit className='editSvg'/>}
             <h2>
                 {
-                    editUser.type === 'add' ? <span className='addSvg'>Cadastrar Usuário(a)</span> : <span className='editSvg'>Editar Usuário(a)</span>
+                  !prevEditUser.status ? <span className='addSvg'>Cadastrar Usuário(a)</span> : <span className='editSvg'>Editar Usuário(a)</span>
                 }
             </h2>
       </Styles.ContainerInfo>
@@ -220,10 +244,14 @@ const FormUser = () => {
         </fieldset>
 
         <MainStyles.ContainerButtons>
-          {!loading.status && <button type='submit'>Confirmar</button>}
+          {!loading.status && <button className={!prevEditUser.type ?'editButton' : ''} type='submit'>Confirmar</button>}
           {loading.status && <button disabled>{loading.message}</button>}
           
-          <button type='reset' onClick={handleReset}>Cancelar</button>
+          <button
+            type='reset'
+            onClick={handleReset}>
+              Cancelar
+            </button>
         </MainStyles.ContainerButtons>
 
         {error.status && <ErrorMessage text={error.message} />}
