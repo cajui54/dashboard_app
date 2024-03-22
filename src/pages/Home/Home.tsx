@@ -1,9 +1,14 @@
 import React from 'react'
-
+import useRequestProduct from '../../hooks/useRequestProduct';
 const Home = () => {
+  const {products} =useRequestProduct();
+
+  console.log(products);
+  
+  
   return (
     <div>
-      <h2>Home</h2>
+      {products && <h2></h2>}
     </div>
   )
 }

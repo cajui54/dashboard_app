@@ -7,12 +7,11 @@ import { useEffect, useState } from 'react';
 import useRequestUser from '../../hooks/useRequestUser';
 import { useDispatch } from 'react-redux';
 import { getIdUser } from '../../redux/slices/sliceUser';
-import { setCloseResultUser } from '../../redux/slices/sliceCallback';
+
 
 const ResultSearch = (datas: {id: string} | IUser) => {
   
     const dispatch = useDispatch();
-    const dispatchCallbackUser = useDispatch();
     const {deleteUser} = useRequestUser();
     const [statusUser, SetStatusUser] = useState<boolean>();
     
@@ -25,7 +24,8 @@ const ResultSearch = (datas: {id: string} | IUser) => {
     const handleEditUser = (_id: string) => {
 
       dispatch(getIdUser({status: true, id: _id}));
-      dispatchCallbackUser(setCloseResultUser(false));
+      window.scroll({top: 650, behavior: 'smooth'});
+      
     }
 
     useEffect(() => {

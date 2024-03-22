@@ -1,4 +1,4 @@
-import { collection, getFirestore, getDocs, doc, deleteDoc, addDoc, updateDoc, setDoc} from "firebase/firestore";
+import { collection, getFirestore, getDocs, doc, deleteDoc, addDoc, updateDoc} from "firebase/firestore";
 import { FirebaseApp, initializeApp } from "firebase/app";
 import {useState, useEffect } from 'react';
 //redux

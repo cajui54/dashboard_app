@@ -59,13 +59,73 @@ const GlobalStyle = createGlobalStyle`
     .isRequiredInput {
         background-color: #fecaca !important;
         border: .2rem solid #ef4444 !important;
+        box-shadow: none !important;
     }
     .isRequiredLable {
+        color: #ef4444 !important;
+        margin-left: 2rem;
+    }
+    .isRequiredAsteristic {
         color: #ef4444 !important;
     }
     .editButton {
         background-color: orange !important;
     }
+    .focusClass {
+        top: 1.3rem !important;
+        font-weight: bold !important;
+        transform: scale(.8);
+    }
+    .tdStatus span{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .tdStatus svg {
+        margin-right: .5rem;
+    }
+    .spanAvailableTable {
+        color: #22c55e !important;
+    }
+    .spanWarningTable {
+        color: #f59e0b !important;
+    }
+    .spanEmptyTable {
+        color: #ef4444 !important;
+    }
+    .actionsButtonTable button{
+        padding: .5rem;
+        margin-right: .5rem;
+        border: none;
+        border-radius: .2rem;
+        font-size: 2rem;
+        color: #1e293b;
+        cursor: pointer;
+        transition: all .5s ease-in-out;
+    }
+    .actionsButtonTable button:first-child{
+        background-color: #d97706;
+    }
+    .actionsButtonTable button:first-child:hover{
+        background-color: #fcd34d;
+    }
+    .actionsButtonTable button:last-child{
+        background-color: #ef4444;
+    }
+    .actionsButtonTable button:last-child:hover{
+        background-color: #f87171;
+    }
+    .loadingArrow {
+        animation: loadingAnimation .5s ease-in-out infinite forwards;
+    }
+    @keyframes loadingAnimation {
+        to {
+            transform: rotate(0deg);
+        }
+        from {
+            transform: rotate(380deg);
+        }
+    }
+`;
 
-`
 export default GlobalStyle;
