@@ -72,6 +72,11 @@ export const SelectContainer = styled.div`
     color: #64748b;
     font-weight: bold;
   }
+  label svg {
+    position: absolute;
+    top: 2rem;
+    left: 3rem;
+  }
   select {
     background-color: #111827;
     width: 90%;

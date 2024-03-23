@@ -76,23 +76,27 @@ const TableContainer = ({ datas, isLoading, deleteUser }: IProps) => {
                   <td>{translatedUser(data.type.toString())}</td>
                   <td>{data.type ? "Ativo" : "Bloqueado"}</td>
                   <td className="actionsButton">
-                    <button
-                      title="Editar Usuário"
-                      onClick={() => handleEditUser(data.id.toString())}
-                    >
-                      <FaUserPen />
-                    </button>
-                    <button
-                      title="Excluir Usuário"
-                      onClick={() =>
-                        handleDeleteUser(
-                          data.id.toString(),
-                          data.firstName.toString()
-                        )
-                      }
-                    >
-                      <BiSolidUserX />
-                    </button>
+                    {data.login != "maria123" && (
+                      <button
+                        title="Editar Usuário"
+                        onClick={() => handleEditUser(data.id.toString())}
+                      >
+                        <FaUserPen />
+                      </button>
+                    )}
+                    {data.login != "maria123" && (
+                      <button
+                        title="Excluir Usuário"
+                        onClick={() =>
+                          handleDeleteUser(
+                            data.id.toString(),
+                            data.firstName.toString()
+                          )
+                        }
+                      >
+                        <BiSolidUserX />
+                      </button>
+                    )}
                   </td>
                 </tr>
               ))}

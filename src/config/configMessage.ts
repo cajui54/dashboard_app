@@ -1,5 +1,5 @@
 export const messagesConfig  = {
     loading: {status: true, message: ''},
-    error: {status: false, message: ''},
+    error: {status: true, message: ''},
     defaultConfig: {status: false, message: ''},
 }

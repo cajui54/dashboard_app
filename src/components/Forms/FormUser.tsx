@@ -36,7 +36,7 @@ const FormUser = () => {
   const [inputDatas, setInputDatas] = useState<IUserInputs>({
     login: "",
     password: "",
-    ra: handleValueRandom().toUpperCase(),
+    ra: handleValueRandom(4).toUpperCase(),
     firstName: "",
     lastName: "",
     status: false,
@@ -128,7 +128,7 @@ const FormUser = () => {
   useEffect(() => {
     try {
       const setValuesDefault = () => {
-        setValue("ra", handleValueRandom().toUpperCase());
+        setValue("ra", handleValueRandom(4).toUpperCase());
       };
       setValuesDefault();
     } catch (e) {

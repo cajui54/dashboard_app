@@ -47,7 +47,7 @@ const TableProducts = () => {
 
         <Styles.HeadTable>
           <tr>
-            <th>RA</th>
+            <th>Código</th>
             <th>Descrição</th>
             <th>Marca</th>
             <th>Status</th>

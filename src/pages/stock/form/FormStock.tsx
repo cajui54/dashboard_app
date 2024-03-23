@@ -1,29 +1,66 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { FaBoxesPacking, FaArrowRotateLeft } from "react-icons/fa6";
 import { MdCancelScheduleSend } from "react-icons/md";
 import { CiBoxes } from "react-icons/ci";
 import * as Styles from "./Form.css";
 import * as MainStyles from "../../../App.css";
 import { useForm } from "react-hook-form";
-const initalesValeus = {
-  ra: "",
-  description: "",
-  brand: "",
-  type: "",
-  price: 0,
-  amount: 0,
-};
+import { IValuesDefault } from "../../../interfaces/Stock";
+import useRandomValues from "../../../hooks/useRandomValues";
+import { Keys } from "../../../interfaces/Stock";
+import useRequestCategory from "../../../hooks/useRequestCategory";
+import ErrorMessage from "../../../components/Messages/Error/ErrorMessage";
 
 const FormStock = () => {
+  const test = false;
+  const {categories, categoriesError, categoriesLoading} = useRequestCategory();
+  const { handleValueRandom } = useRandomValues();
+  const [callReset, setCallReset] = useState<"" | "reset">("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [valuesDefault] = useState<IValuesDefault>({
+    ra: handleValueRandom(4).toUpperCase(),
+    description: "",
+    brand: "",
+    type: "",
+    price: 1,
+    amount: 1,
+  });
+  
   const {
+    handleSubmit,
     register,
+    resetField,
+    setValue,
     formState: { errors },
-  } = useForm({ defaultValues: { ...initalesValeus } });
-  const refSpanFocus = useRef<HTMLParagraphElement | null>(null);
-  const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
-    console.log(refSpanFocus.current);
+  } = useForm({ defaultValues: { ...valuesDefault } });
+
+  const handleReset = () => {
+    Object.keys(valuesDefault).forEach((key: string) => {
+      resetField(key as Keys);
+    });
+    setCallReset("reset");
   };
+  const onSubmitPrtoduct = (data: any) => {
+    try {
+      setIsLoading(true);
+      console.log(data);
+    } catch (error) {
+
+    } finally {
+      setTimeout(() => {
+        setIsLoading(false);
+        handleReset();
+      }, 1500);
+    }
+  };
+  
+  useEffect(() => {
+    if (callReset === "reset") {
+      setValue("ra", handleValueRandom(5).toUpperCase());
+      setCallReset("");
+    }
+  }, [callReset]);
+
   return (
     <Styles.MainFormStock>
       <Styles.LogoForm>
@@ -37,14 +74,18 @@ const FormStock = () => {
 
         <MainStyles.InputContainer>
           <label>
-            <p>RA:</p>
+            <p>Código:</p>
+
             <input
+              title="Código é gerado pelo sistema"
+              style={{ cursor: "not-allowed" }}
               maxLength={4}
               type="text"
               {...register("ra", { required: true, minLength: 4 })}
-              onFocus={handleFocus}
               placeholder="XXXX"
+              readOnly
             />
+
             <span>*</span>
           </label>
           {errors.ra?.type === "required" && (
@@ -92,19 +133,33 @@ const FormStock = () => {
           )}
         </MainStyles.InputContainer>
 
-        <MainStyles.SelectContainer>
-          <label>
-            <p>Categoria</p>
-            <select defaultValue={""} {...register("type", { required: true })}>
-              <option value="">Selecione</option>
-              <option value="refrigerante">Refrigerante</option>
-            </select>
-            <span>*</span>
-          </label>
-          {errors.type?.type === "required" && (
-            <p className="errorMessage">Selecione uma opção</p>
-          )}
-        </MainStyles.SelectContainer>
+        {!categoriesError.status ? (
+          <MainStyles.SelectContainer>
+            <label>
+              <p>Categoria</p>
+              { categoriesLoading.status && <FaArrowRotateLeft className="loadingArrow" /> }
+              <select defaultValue={""} {...register("type", { required: true })}>
+              { !categoriesLoading.status ? (
+                <>
+                  <option value="" disabled>Selecione</option>
+                  { categories && categories.map((category, index) => (
+                      <option key={index} value={category.type}>{category.value}</option>
+                    ))}
+                </>
+              ) : (
+                <option value="">Carregando...</option>
+              )}
+              </select>
+              <span>*</span>
+            </label>
+            {errors.type?.type === "required" && (
+              <p className="errorMessage">Selecione uma opção</p>
+            )}
+          </MainStyles.SelectContainer>
+        ) : (
+          <ErrorMessage text={`Ocorreu um erro em categorias! ${categoriesError.message}`}/>
+        )}
+      
 
         <MainStyles.InputContainer>
           <label>
@@ -139,10 +194,12 @@ const FormStock = () => {
         </MainStyles.InputContainer>
 
         <MainStyles.ButtonsContainer>
-          <button>
-            <FaBoxesPacking />
-            Confirmar
-          </button>
+          {!isLoading && (
+            <button onClick={() => handleSubmit(onSubmitPrtoduct)()}>
+              <FaBoxesPacking />
+              Confirmar
+            </button>
+          )}
           {isLoading && (
             <button disabled>
               <FaArrowRotateLeft className="loadingArrow" />
@@ -150,7 +207,7 @@ const FormStock = () => {
             </button>
           )}
 
-          <button>
+          <button type="reset" onClick={handleReset}>
             <MdCancelScheduleSend />
             Cancelar
           </button>
