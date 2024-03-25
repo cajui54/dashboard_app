@@ -7,18 +7,19 @@ import * as MainStyles from "../../../App.css";
 import { useForm } from "react-hook-form";
 import { IValuesDefault } from "../../../interfaces/Stock";
 import useRandomValues from "../../../hooks/useRandomValues";
+import useRequestProduct from '../../../hooks/useRequestProduct';
 import { Keys } from "../../../interfaces/Stock";
 import useRequestCategory from "../../../hooks/useRequestCategory";
 import ErrorMessage from "../../../components/Messages/Error/ErrorMessage";
 
 const FormStock = () => {
-  const test = false;
+  const {addNewProduct, products} = useRequestProduct();
   const {categories, categoriesError, categoriesLoading} = useRequestCategory();
   const { handleValueRandom } = useRandomValues();
   const [callReset, setCallReset] = useState<"" | "reset">("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [valuesDefault] = useState<IValuesDefault>({
-    ra: handleValueRandom(4).toUpperCase(),
+    ra: handleValueRandom(5).toUpperCase(),
     description: "",
     brand: "",
     type: "",
@@ -40,10 +41,10 @@ const FormStock = () => {
     });
     setCallReset("reset");
   };
-  const onSubmitPrtoduct = (data: any) => {
+  const onSubmitPrtoduct = (data: IValuesDefault) => {
     try {
       setIsLoading(true);
-      console.log(data);
+      addNewProduct(data);
     } catch (error) {
 
     } finally {
@@ -59,6 +60,7 @@ const FormStock = () => {
       setValue("ra", handleValueRandom(5).toUpperCase());
       setCallReset("");
     }
+ 
   }, [callReset]);
 
   return (
@@ -100,10 +102,18 @@ const FormStock = () => {
 
         <MainStyles.InputContainer>
           <label>
-            <p>Nome:</p>
+            <p>Descrição do Produto:</p>
             <input
               type="text"
-              {...register("description", { required: true, minLength: 5 })}
+                {...register("description",
+                  { required: true,
+                    minLength: 5,
+                    validate: (value: string) => {
+                   
+                      const getProducts = products && products.map((product) => product.description)
+                      return !getProducts.includes(value);
+                    }
+                  })}
               placeholder="Dolly Guaraná 2 L"
             />
             <span>*</span>
@@ -114,6 +124,11 @@ const FormStock = () => {
           {errors.description?.type === "minLength" && (
             <p className="errorMessage">
               Campo Nome deve conter ao menos 4 caracteres!
+            </p>
+          )}
+             {errors.description?.type === "validate" && (
+            <p className="errorMessage">
+              Já exite esse produto cadastrado no sistema!
             </p>
           )}
         </MainStyles.InputContainer>
@@ -172,7 +187,7 @@ const FormStock = () => {
             />
             <span>*</span>
           </label>
-          {errors.brand?.type === "required" && (
+          {errors.amount?.type === "required" && (
             <p className="errorMessage">Campo Quantidade é obrigatório!</p>
           )}
         </MainStyles.InputContainer>
@@ -182,13 +197,13 @@ const FormStock = () => {
             <p>Preço R$:</p>
             <input
               type="number"
-              {...register("amount", { required: true })}
+              {...register("price", { required: true })}
               placeholder="R$:0,00"
               min={1}
             />
             <span>*</span>
           </label>
-          {errors.brand?.type === "required" && (
+          {errors.price?.type === "required" && (
             <p className="errorMessage">Campo Quantidade é obrigatório!</p>
           )}
         </MainStyles.InputContainer>

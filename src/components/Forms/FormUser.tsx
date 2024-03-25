@@ -178,6 +178,7 @@ const FormUser = () => {
                   errors.ra?.type === "required" ? "isRequiredInput" : ""
                 }
                 type="text"
+                placeholder="Carlos"
                 maxLength={4}
                 {...register("ra", { required: true })}
                 title="O código será gerado automaticamente!"
@@ -212,6 +213,7 @@ const FormUser = () => {
                 className={
                   errors.firstName?.type === "required" ? "isRequiredInput" : ""
                 }
+                placeholder="Maria"
                 {...register("firstName", { required: true })}
               />
 
@@ -244,6 +246,7 @@ const FormUser = () => {
                 className={
                   errors.lastName?.type === "required" ? "isRequiredInput" : ""
                 }
+                placeholder="Santos"
                 {...register("lastName", { required: true })}
               />
               <span
@@ -271,7 +274,7 @@ const FormUser = () => {
                 <option value="default">Atendente</option>
                 <option value="stock">Estoquista</option>
                 <option value="finance">Financeiro</option>
-                <option value="admin">Administrador</option>
+                <option value="admin" disabled>Administrador</option>
               </select>
               <span>*</span>
             </label>
@@ -300,6 +303,7 @@ const FormUser = () => {
                     }
                   },
                 })}
+                placeholder="santos2"
               />
               <span style={{ color: errors.login ? "#ef4444" : "#fff" }}>
                 *
@@ -332,6 +336,7 @@ const FormUser = () => {
 
               <input
                 type="password"
+                placeholder="*****"
                 className={
                   errors.password?.type === "required" ? "isRequiredInput" : ""
                 }

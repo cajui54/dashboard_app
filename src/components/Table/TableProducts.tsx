@@ -7,7 +7,9 @@ import useRequestProduct from "../../hooks/useRequestProduct";
 import { IStockAs } from "../../interfaces/Stock";
 import { FaUserPen } from "react-icons/fa6";
 import { BiSolidUserX } from "react-icons/bi";
+
 const TableProducts = () => {
+  const {deleteProduct} = useRequestProduct();
   const { productSearch } = useSelector(selectorProducts);
   const [products, setProducts] = useState<IStockAs[] | []>([]);
   const [statusAmount, setStatusAmount] = useState({
@@ -33,7 +35,12 @@ const TableProducts = () => {
     }
     return "spanAvailableTable";
   };
-
+  const handleDeleteProduct = (id: string, description: string) => {
+    const msg = `Tem certeza que deseja excluir esse produto permanente? \n - ${description}`;
+    if(window.confirm(msg)) {
+      deleteProduct(id);
+    }
+  }
   useEffect(() => {
     if (productSearch) setProducts(productSearch);
   }, [productSearch]);
@@ -77,7 +84,7 @@ const TableProducts = () => {
                   <button title="Editar Produto">
                     <FaUserPen />
                   </button>
-                  <button title="Deletar Produto">
+                  <button title="Deletar Produto" onClick={() => handleDeleteProduct(product.id as string, product.description as string)}>
                     <BiSolidUserX />
                   </button>
                 </td>
