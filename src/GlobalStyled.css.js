@@ -118,6 +118,14 @@ const GlobalStyle = createGlobalStyle`
     .loadingArrow {
         animation: loadingAnimation .5s ease-in-out infinite forwards;
     }
+    .editSVG {
+        color: #f59e0b;
+        font-size: 8rem !important;
+        margin-left: 1.5rem;
+    }
+    .editStyle {
+        color: #f59e0b !important;
+    }
     @keyframes loadingAnimation {
         to {
             transform: rotate(0deg);
@@ -126,6 +134,20 @@ const GlobalStyle = createGlobalStyle`
             transform: rotate(380deg);
         }
     }
+    .SearchByCategory {
+        position: absolute;
+        width: 30rem;
+        right: .0rem;
+        top: -2rem;
+    }
+    .SearchByCategory label p {
+        font-size: .8rem;
+    }
+    .SearchByCategory select {
+        width: 18.5rem !important;
+        padding: 1.2rem !important;
+    }
+   
 `;
 
 export default GlobalStyle;

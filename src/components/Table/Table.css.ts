@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 export const MainTable = styled.section`
+  position: relative;
   margin-top: 2rem;
   min-height: 30rem;
   width: 100%;
@@ -67,6 +68,7 @@ export const TableProduct = styled.table`
   margin-left: 2rem;
 
   caption {
+    position: relative;
     border-radius: 0.2rem;
     background-color: var(--main-bg-color--secundary);
     font-size: 1.5rem;
@@ -85,3 +87,10 @@ export const TbodyTable = styled.tbody`
     padding: 1rem 0;
   }
 `;
+
+export const WarningProduct = styled.div`
+  position: absolute;
+  width: 70rem;
+  top: 14rem;
+  right: 1rem;
+`

@@ -26,7 +26,8 @@ export const LogoForm = styled.div`
     font-size: 10rem;
   }
   h2 {
+    text-align: center;
     font-size: 1rem;
-    margin-top: -1rem;
+    margin-top: .2rem;
   }
 `;

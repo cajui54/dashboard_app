@@ -2,20 +2,34 @@ import React, { useEffect, useRef, useState } from "react";
 import { FaBoxesPacking, FaArrowRotateLeft } from "react-icons/fa6";
 import { MdCancelScheduleSend } from "react-icons/md";
 import { CiBoxes } from "react-icons/ci";
+import { FaEdit } from "react-icons/fa";
 import * as Styles from "./Form.css";
 import * as MainStyles from "../../../App.css";
 import { useForm } from "react-hook-form";
-import { IValuesDefault } from "../../../interfaces/Stock";
+import { IValuesDefault, IStock } from "../../../interfaces/Stock";
 import useRandomValues from "../../../hooks/useRandomValues";
 import useRequestProduct from '../../../hooks/useRequestProduct';
 import { Keys } from "../../../interfaces/Stock";
 import useRequestCategory from "../../../hooks/useRequestCategory";
 import ErrorMessage from "../../../components/Messages/Error/ErrorMessage";
-
+import { useSelector, useDispatch } from "react-redux";
+import { setIdProduct } from "../../../redux/slices/sliceProduct"; 
+import { selectorProducts } from "../../../redux/slices/sliceProduct";
+interface IPrevEdit {
+  status: boolean,
+  textTitle:  string,
+}
+const configPreEdit: {editOff: IPrevEdit, editOn: IPrevEdit} = {
+  editOff: {status: false, textTitle: 'Cadastrar Produto',},
+  editOn: {status: true, textTitle: 'Editar Produto'},
+}
 const FormStock = () => {
-  const {addNewProduct, products} = useRequestProduct();
+  const {idProduct} = useSelector(selectorProducts);
+  const dispatch = useDispatch();
+  const {addNewProduct, products, editProduct} = useRequestProduct();
   const {categories, categoriesError, categoriesLoading} = useRequestCategory();
   const { handleValueRandom } = useRandomValues();
+  const [preEdit, setPreEdit] = useState<IPrevEdit>(configPreEdit.editOff);
   const [callReset, setCallReset] = useState<"" | "reset">("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [valuesDefault] = useState<IValuesDefault>({
@@ -35,13 +49,15 @@ const FormStock = () => {
     formState: { errors },
   } = useForm({ defaultValues: { ...valuesDefault } });
 
+  const convertValueToNumber = (value: number | string) => typeof value === 'number' ? value : parseFloat(value);
+
   const handleReset = () => {
     Object.keys(valuesDefault).forEach((key: string) => {
       resetField(key as Keys);
     });
     setCallReset("reset");
-  };
-  const onSubmitPrtoduct = (data: IValuesDefault) => {
+  };    
+  const onSubmitProduct = (data: IValuesDefault) => {
     try {
       setIsLoading(true);
       addNewProduct(data);
@@ -54,29 +70,59 @@ const FormStock = () => {
       }, 1500);
     }
   };
+  const handleEditProduct = (data: IValuesDefault) => {
+    if(window.confirm(' - Tem certeza que deseja editar esse produto? \n')) {
+      try {
+        editProduct({...data, id: idProduct});
   
+      } catch(error) {
+        alert(`Ocorreu um error inesperado ao editar produto! \n ${error}`)
+      } finally {
+        setTimeout(() => {
+          setIsLoading(false);
+          handleReset();
+        }, 1500);
+      }
+    }
+  }
   useEffect(() => {
     if (callReset === "reset") {
       setValue("ra", handleValueRandom(5).toUpperCase());
       setCallReset("");
+      setPreEdit(configPreEdit.editOff);
+      dispatch(setIdProduct(null));
     }
- 
   }, [callReset]);
 
+  useEffect(() => {
+    if(idProduct) {
+      const dataItem = products.find(item => item.id === idProduct);
+      if(dataItem) {
+        setValue("ra", dataItem.ra.toString());
+        setValue("description", dataItem.description.toString());
+        setValue("brand", dataItem.brand.toString());
+        setValue("type", dataItem.type.toString());
+        setValue("amount", convertValueToNumber(dataItem.amount));
+        setValue("price", convertValueToNumber(dataItem.price));
+
+        setPreEdit(configPreEdit.editOn);
+      }
+    }
+  }, [idProduct])
   return (
     <Styles.MainFormStock>
       <Styles.LogoForm>
         <div>
-          <CiBoxes />
-          <h2>Cadastrar Produto</h2>
+          {!preEdit.status ? <CiBoxes /> : <FaEdit className="editSVG"/>}
+          <h2 className= {preEdit.status ? "editStyle" : "" } >{preEdit.textTitle}</h2>
         </div>
       </Styles.LogoForm>
       <MainStyles.FieldsetContainer>
-        <h6>Preencha todos os campos abaixo:</h6>
+        <h6 className= {preEdit.status ? "editStyle" : "" }>Preencha todos os campos abaixo:</h6>
 
         <MainStyles.InputContainer>
           <label>
-            <p>Código:</p>
+            <p className= {preEdit.status ? "editStyle" : "" }>Código:</p>
 
             <input
               title="Código é gerado pelo sistema"
@@ -102,16 +148,18 @@ const FormStock = () => {
 
         <MainStyles.InputContainer>
           <label>
-            <p>Descrição do Produto:</p>
+            <p className= {preEdit.status ? "editStyle" : "" } >Descrição do Produto:</p>
             <input
               type="text"
                 {...register("description",
                   { required: true,
                     minLength: 5,
                     validate: (value: string) => {
-                   
-                      const getProducts = products && products.map((product) => product.description)
-                      return !getProducts.includes(value);
+                      if(!idProduct) {
+                        const getProducts = products && products.map((product) => product.description)
+                        return !getProducts.includes(value);
+                      }
+                      return true;
                     }
                   })}
               placeholder="Dolly Guaraná 2 L"
@@ -135,7 +183,7 @@ const FormStock = () => {
 
         <MainStyles.InputContainer>
           <label>
-            <p>Marca:</p>
+            <p className= {preEdit.status ? "editStyle" : "" }>Marca:</p>
             <input
               type="text"
               {...register("brand", { required: true })}
@@ -151,7 +199,7 @@ const FormStock = () => {
         {!categoriesError.status ? (
           <MainStyles.SelectContainer>
             <label>
-              <p>Categoria</p>
+              <p className= {preEdit.status ? "editStyle" : "" } >Categoria</p>
               { categoriesLoading.status && <FaArrowRotateLeft className="loadingArrow" /> }
               <select defaultValue={""} {...register("type", { required: true })}>
               { !categoriesLoading.status ? (
@@ -178,7 +226,7 @@ const FormStock = () => {
 
         <MainStyles.InputContainer>
           <label>
-            <p>Quantidade:</p>
+            <p className= {preEdit.status ? "editStyle" : "" }>Quantidade:</p>
             <input
               type="number"
               {...register("amount", { required: true })}
@@ -194,7 +242,7 @@ const FormStock = () => {
 
         <MainStyles.InputContainer>
           <label>
-            <p>Preço R$:</p>
+            <p className= {preEdit.status ? "editStyle" : "" }>Preço R$:</p>
             <input
               type="number"
               {...register("price", { required: true })}
@@ -210,10 +258,20 @@ const FormStock = () => {
 
         <MainStyles.ButtonsContainer>
           {!isLoading && (
-            <button onClick={() => handleSubmit(onSubmitPrtoduct)()}>
-              <FaBoxesPacking />
-              Confirmar
+            !preEdit.status && (
+              <button onClick={() => handleSubmit(onSubmitProduct)()}>
+                <FaBoxesPacking />
+                Confirmar
+              </button>
+            )
+          )}
+          {!isLoading && (
+            preEdit.status && (
+            <button className='editButton' onClick={() => handleSubmit(handleEditProduct)()}>
+              <FaEdit  />
+              Editar
             </button>
+            )
           )}
           {isLoading && (
             <button disabled>

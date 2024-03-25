@@ -38,6 +38,21 @@ const useRequestProduct = () => {
             alert(`Ocorreu um error ao deletar o produto! \n ${error}`);
         }
     }
+    const editProduct = async (data: any) => {
+        try {
+
+            const productDoc = doc(db, "products", data.id);
+
+            await updateDoc(productDoc, data);
+
+            alert('Produto foi atualizado com sucesso!');
+            dispatch(setCallFetchProduct(true));
+
+        } catch(error) {
+            alert(`Ocorreu um error inesperado ao editar o produto! \n ${error}`);
+        }
+        
+    }
     useEffect(() => {
         try {
             const getProducts = async () => {
@@ -58,7 +73,7 @@ const useRequestProduct = () => {
         
     }, [callFetchProduct]);
 
-  return {products, isLoading, error, addNewProduct, deleteProduct};
+  return {products, isLoading, error, addNewProduct, deleteProduct, editProduct};
 }
 
 export default useRequestProduct;

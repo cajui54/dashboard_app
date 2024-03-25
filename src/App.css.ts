@@ -123,7 +123,7 @@ export const ButtonsContainer = styled.div`
     background-color: #0f766e;
   }
   button:nth-child(2) {
-    background-color: #eab308;
+    background-color:#475569;
   }
   button:nth-child(1):hover {
     background-color: #0f766e;
