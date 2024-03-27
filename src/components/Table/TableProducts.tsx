@@ -10,7 +10,7 @@ import { FaUserPen } from "react-icons/fa6";
 import { BiSolidUserX } from "react-icons/bi";
 import SearchByCategory from "./SearchByCategory";
 import WarningMessage from "../Messages/Warning/WarningMessage";
-
+import {formatMoneyBR} from '../../config/formatMoneyBR';
 const TableProducts = () => {
   const dispatch = useDispatch();
   const {deleteProduct} = useRequestProduct();
@@ -84,7 +84,7 @@ const TableProducts = () => {
                   </span>
                 </td>
                 <td>{product.type}</td>
-                <td>{product.price}</td>
+                <td>{formatMoneyBR.format(product.price as number)}</td>
                 <td>{product.amount}</td>
                 <td className="actionsButtonTable">
                   <button title="Editar Produto" onClick={() => handleGetIdEdit(product.id.toString())}>

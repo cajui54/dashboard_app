@@ -21,7 +21,7 @@ const useRequestProduct = () => {
 
     const addNewProduct = async (product: IValuesDefault) => {
         try {
-            await addDoc(userCollectionRef, product);
+            await addDoc(userCollectionRef, {...product, profit: 0, porcentProfit: 0});
             dispatch(setCallFetchProduct(true));
 
         } catch (error) {

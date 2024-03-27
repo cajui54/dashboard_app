@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const ErrorMain = styled.div`
     background-color: #FFDDDD;
-    color: #dc2626;
+    color: #dc2626 ;
     font-weight: bold;
     letter-spacing: .2rem;
     padding: .2rem 0;

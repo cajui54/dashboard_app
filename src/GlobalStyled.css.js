@@ -6,7 +6,10 @@ const GlobalStyle = createGlobalStyle`
         --color-green: #14b8a6;
         --btn-edit: #fb923c;
         --color-green--dark: #10E180;
+        --color-green--ligth: #bbf7d0;
         --color-black: #030712;
+        --color-red-dark: #ef4444;
+        --color-red-ligth: #fca5a5;
     }
     html {
         font-size: 62.5%;
@@ -64,6 +67,7 @@ const GlobalStyle = createGlobalStyle`
     .isRequiredLable {
         color: #ef4444 !important;
         margin-left: 2rem;
+        letter-spacing: .1rem;
     }
     .isRequiredAsteristic {
         color: #ef4444 !important;
