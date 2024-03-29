@@ -11,15 +11,17 @@ interface IType  {
 const SearchSelect = () => {
     const {setCategory} = useSearchByCategory();
     const {categories, categoriesError, categoriesLoading} = useRequestCategory();
-    const {register, handleSubmit, control } = useForm<{type: string}>({defaultValues: {type: 'all'}});
+    const {register, control } = useForm<{type: string}>({defaultValues: {type: 'all'}});
     const typeSelect = useWatch<IType>({control, name: 'type'});
     
     React.useEffect(() => {
         setCategory(typeSelect);
+        
     }, [typeSelect])
     
   return (
     <Styles.SelectContainer>
+      
       { !categoriesError.status ? (
         <>
             <select {...register('type')} defaultValue='all' >

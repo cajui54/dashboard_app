@@ -23,7 +23,7 @@ const useSearchByCategory = () => {
           }
           searchByCategory();
         
-    }, [category]);
+    }, [category, products]);
 
   return {
     category,

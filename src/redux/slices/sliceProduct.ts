@@ -13,6 +13,7 @@ const sliceProduct = createSlice({
   name: "product",
   initialState: initialValues,
   reducers: {
+
     setProducts(state, { payload }: PayloadAction<IStockAs[]>) {
       state.productSearch = payload;
       return state;
