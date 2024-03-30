@@ -50,9 +50,18 @@ export const BodyTable = styled.tbody`
         letter-spacing: .1rem;
         padding: 1rem 0;
     }
+    .TDProfit {
+        color: var(--color-green--dark);
+    }
 
 `
-export const TDProfit = styled.td`
+export const TDAmount = styled.td` 
+    p:last-child {
+        font-size: .6rem;
+    }
+
+`
+export const TDProfitInput = styled.td`
     
     input {
         background-color: var(--color-black);
@@ -69,6 +78,26 @@ export const TDProfit = styled.td`
         margin-left: 1rem;
         font-size: 1.3rem;
         color: var(--color-green--dark);
+    }
+
+`
+export const TDPriceSell = styled.td`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    div {
+        position: relative;
+        margin-left: .5rem;
+        font-weight: bold;
+        font-size: .8rem;
+        color: var(--color-green--dark);
+    }
+    div span {
+        position: absolute;
+        color: #fff;
+        right: .0rem;
+        top: -.5rem;
+        font-size: .5rem;
     }
 
 `

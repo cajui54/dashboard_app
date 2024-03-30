@@ -6,7 +6,7 @@ import { FaEdit } from "react-icons/fa";
 import * as Styles from "./Form.css";
 import * as MainStyles from "../../../App.css";
 import { useForm } from "react-hook-form";
-import { IValuesDefault, IStock } from "../../../interfaces/Stock";
+import { IValuesDefault } from "../../../interfaces/Stock";
 import useRandomValues from "../../../hooks/useRandomValues";
 import useRequestProduct from '../../../hooks/useRequestProduct';
 import { Keys } from "../../../interfaces/Stock";

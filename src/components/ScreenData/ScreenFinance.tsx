@@ -9,25 +9,12 @@ import useRequestProduct from '../../hooks/useRequestProduct';
 import {formatMoneyBR} from '../../config/formatMoneyBR';
 import ErrorMessage from '../Messages/Error/ErrorMessage';
 import LoadingMessage from '../Messages/Loading/LoadingMessage';
+import { Profit } from '../../config/Profit';
 
 const ScreenFinance = () => {
+  const { calculateExpectation } = new Profit();
   const {products, error, isLoading} = useRequestProduct();
-  const [valueInvest, setValueInvest] = useState<number | null>(null);
   
-  useEffect(() => {
-    const requestDatas = () => {
-      if(products.length > 0 ) {
-        const totally = products.map(item => typeof item.price === 'string' ? parseFloat(item.price) : item.price)
-              .reduce((acc, curr) => acc + curr,0);
-        setValueInvest(totally);
-      } else {
-        setValueInvest(0);
-      }
-     
-    }
-    requestDatas();
-    
-  }, [products])
   return (
     <Styles.MainScreenFinance>
       <h2 className='subtitle'>Métricas e informações gerais</h2>
@@ -39,13 +26,10 @@ const ScreenFinance = () => {
                 <h2>Total Investido</h2>
                 <div className='firstContainer'>
                   <MdOutlineAttachMoney/>
-                  { valueInvest && (
-                      <span>
-                        { 
-                          formatMoneyBR.format(valueInvest)
-                        }
-                      </span>
-                    )}
+                    <span>
+                      {products.length > 0 && formatMoneyBR.format(calculateExpectation(products, "price"))}
+                    </span>
+                  
                 </div>
               </Styles.CardMetrics>
               ): (
@@ -64,7 +48,7 @@ const ScreenFinance = () => {
                       Expectatica:
                     </span>
                     <span>
-                      R$:20.000
+                      {products.length > 0 && formatMoneyBR.format(calculateExpectation(products, "profit"))}
                     </span>
                   </li>
 

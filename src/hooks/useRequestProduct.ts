@@ -8,6 +8,7 @@ import { messagesConfig } from '../config/configMessage';
 import { useDispatch, useSelector } from 'react-redux';
 import { setCallFetchProduct } from '../redux/slices/sliceCallback'; 
 import { selectorCallback } from '../redux/slices/sliceCallback';
+
 const useRequestProduct = () => {
     const [products, setProducts] = useState<IStockAs[] | []>([]);
     const dispatch = useDispatch();
@@ -21,7 +22,7 @@ const useRequestProduct = () => {
 
     const addNewProduct = async (product: IValuesDefault) => {
         try {
-            await addDoc(userCollectionRef, {...product, profit: 0, porcentProfit: 0});
+            await addDoc(userCollectionRef, {...product, profit: 0, porcentProfit: 25});
             dispatch(setCallFetchProduct(true));
 
         } catch (error) {
@@ -53,6 +54,18 @@ const useRequestProduct = () => {
         }
         
     }
+    const editProfitProduct = async (item: IStockAs) => {
+        
+        try {
+            const productEditDoc = doc(db, "products", item.id.toString());
+
+            await updateDoc(productEditDoc, item);
+            dispatch(setCallFetchProduct(true));
+        } catch(error) {
+            alert(`Ocorreu um error ao aterar o lucro`);
+        }
+        
+    }
     useEffect(() => {
         try {
             const getProducts = async () => {
@@ -73,7 +86,15 @@ const useRequestProduct = () => {
         
     }, [callFetchProduct]);
 
-  return {products, isLoading, error, addNewProduct, deleteProduct, editProduct};
+  return {
+    products,
+    isLoading,
+    error,
+    addNewProduct,
+    deleteProduct,
+    editProduct,
+    editProfitProduct
+    };
 }
 
 export default useRequestProduct;

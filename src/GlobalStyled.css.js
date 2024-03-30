@@ -151,7 +151,15 @@ const GlobalStyle = createGlobalStyle`
         width: 18.5rem !important;
         padding: 1.2rem !important;
     }
-   
+    .statusAvailable p:last-child{
+        color: var(--color-green--dark) !important;
+    }
+    .statusAmost p:last-child {
+        color: var(--btn-edit) !important;
+    }
+    .statusOver p:last-child {
+        color: var(--color-red-dark) !important;
+    }
 `;
 
 export default GlobalStyle;
