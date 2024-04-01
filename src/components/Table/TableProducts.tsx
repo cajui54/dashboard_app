@@ -11,30 +11,15 @@ import { BiSolidUserX } from "react-icons/bi";
 import SearchByCategory from "./SearchByCategory";
 import WarningMessage from "../Messages/Warning/WarningMessage";
 import {formatMoneyBR} from '../../config/formatMoneyBR';
+import { Profit } from "../../config/Profit";
+
 const TableProducts = () => {
   const dispatch = useDispatch();
+  const {checkAmount, setColorClassSpan} = new Profit();
   const {deleteProduct} = useRequestProduct();
   const { productSearch } = useSelector(selectorProducts);
   const [products, setProducts] = useState<IStockAs[] | []>([]);
 
-  const checkAmount = (amount: number | string): string => {
-    const value = typeof amount === "string" ? parseInt(amount) : amount;
-    if (value === 0) {
-      return "indisponível";
-    } else if (value > 0 && value <= 5) {
-      return "Acabando";
-    }
-    return "Disponível";
-  };
-  const setColorClassSpan = (amount: number | string): string => {
-    const value = typeof amount === "string" ? parseInt(amount) : amount;
-    if (value === 0) {
-      return "spanEmptyTable";
-    } else if (value > 0 && value <= 5) {
-      return "spanWarningTable";
-    }
-    return "spanAvailableTable";
-  };
   const handleDeleteProduct = (id: string, description: string) => {
     const msg = `Tem certeza que deseja excluir esse produto permanente? \n - ${description}`;
     if(window.confirm(msg)) {

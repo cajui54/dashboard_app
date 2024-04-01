@@ -41,5 +41,24 @@ export class Profit {
         }
         return 0
       }
+      
+      checkAmount = (amount: number | string): string => {
+        const value = typeof amount === "string" ? parseInt(amount) : amount;
+        if (value === 0) {
+          return "indisponível";
+        } else if (value > 0 && value <= 5) {
+          return "Acabando";
+        }
+        return "Disponível";
+      };
+      setColorClassSpan = (amount: number | string): string => {
+        const value = typeof amount === "string" ? parseInt(amount) : amount;
+        if (value === 0) {
+          return "spanEmptyTable";
+        } else if (value > 0 && value <= 5) {
+          return "spanWarningTable";
+        }
+        return "spanAvailableTable";
+      };
 }
 

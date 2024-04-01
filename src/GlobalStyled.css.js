@@ -10,6 +10,7 @@ const GlobalStyle = createGlobalStyle`
         --color-black: #030712;
         --color-red-dark: #ef4444;
         --color-red-ligth: #fca5a5;
+        --color-grey-light: #64748B;
     }
     html {
         font-size: 62.5%;
@@ -160,6 +161,7 @@ const GlobalStyle = createGlobalStyle`
     .statusOver p:last-child {
         color: var(--color-red-dark) !important;
     }
+
 `;
 
 export default GlobalStyle;

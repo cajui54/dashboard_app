@@ -17,8 +17,8 @@ export const MainFormStock = styled.div`
       position: absolute;
       color: var(--color-green--dark);
       font-size: 2rem;
-      right: 1.5rem;
-      bottom: 3rem;
+      right: 2rem;
+      bottom: 2.5rem;
     }
   }
   .ContainerProfit {

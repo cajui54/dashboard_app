@@ -1,12 +1,17 @@
-import React from 'react'
-import useRequestProduct from '../../hooks/useRequestProduct';
+import * as Styles from './Home.css';
+import SearchSell from './Search/SearchSell';
+import SearchResult from './SearchResult/SearchResult';
+
 const Home = () => {
-  const {products} =useRequestProduct();
+  
 
   return (
-    <div>
-      {products && <h2></h2>}
-    </div>
+    <Styles.HomeMain>
+      <Styles.ContainerSearh>
+        <SearchSell/>
+        <SearchResult/>
+      </Styles.ContainerSearh>
+    </Styles.HomeMain>
   )
 }
 
