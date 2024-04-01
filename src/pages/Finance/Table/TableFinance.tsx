@@ -14,6 +14,7 @@ import { Profit } from '../../../config/Profit';
 
 
 const TableFinance = () => {
+  
   const {editProfitProduct} = useRequestProduct();
   useSearchByCategory();
   const {calculateProfit, calculateProductWithoutProfit, calculatePriceToSell, calculateProfitUnitary} = new Profit();

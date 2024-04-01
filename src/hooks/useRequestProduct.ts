@@ -22,7 +22,7 @@ const useRequestProduct = () => {
 
     const addNewProduct = async (product: IValuesDefault) => {
         try {
-            await addDoc(userCollectionRef, {...product, profit: 0, porcentProfit: 25});
+            await addDoc(userCollectionRef, product);
             dispatch(setCallFetchProduct(true));
 
         } catch (error) {

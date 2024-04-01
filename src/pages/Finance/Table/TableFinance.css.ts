@@ -86,18 +86,21 @@ export const TDPriceSell = styled.td`
     align-items: center;
     justify-content: center;
     div {
+        padding: .5rem;
+        border-radius: .5rem;
         position: relative;
-        margin-left: .5rem;
+        margin-left: 1rem;
         font-weight: bold;
         font-size: .8rem;
         color: var(--color-green--dark);
+        border: .1rem solid var(--color-green--dark);
     }
     div span {
         position: absolute;
         color: #fff;
-        right: .0rem;
-        top: -.5rem;
-        font-size: .5rem;
+        left: .0rem;
+        top: -1.1rem;
+        font-size: .8rem;
     }
 
 `

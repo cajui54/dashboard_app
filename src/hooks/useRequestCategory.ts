@@ -15,6 +15,7 @@ const useRequestCategory = () => {
         {type: "vinho", value: "Vinho"},
         {type: "wisky", value: "Wisky"},
         {type: "salgadinho", value: "Salgadinho"},
+        {type: "doce", value: "Doces"},
       ]
     const [categories, setCategories] = useState<null | ICategory[]>(null);
     const [categoriesError, setCategoriesError] = useState<IDefaultStates>(messagesConfig.defaultConfig);

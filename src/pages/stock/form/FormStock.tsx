@@ -1,11 +1,11 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { FaBoxesPacking, FaArrowRotateLeft } from "react-icons/fa6";
 import { MdCancelScheduleSend } from "react-icons/md";
 import { CiBoxes } from "react-icons/ci";
 import { FaEdit } from "react-icons/fa";
 import * as Styles from "./Form.css";
 import * as MainStyles from "../../../App.css";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { IValuesDefault } from "../../../interfaces/Stock";
 import useRandomValues from "../../../hooks/useRandomValues";
 import useRequestProduct from '../../../hooks/useRequestProduct';
@@ -15,6 +15,8 @@ import ErrorMessage from "../../../components/Messages/Error/ErrorMessage";
 import { useSelector, useDispatch } from "react-redux";
 import { setIdProduct } from "../../../redux/slices/sliceProduct"; 
 import { selectorProducts } from "../../../redux/slices/sliceProduct";
+import { Profit } from "../../../config/Profit";
+import { formatMoneyBR } from "../../../config/formatMoneyBR";
 
 interface IPrevEdit {
   status: boolean,
@@ -25,6 +27,7 @@ const configPreEdit: {editOff: IPrevEdit, editOn: IPrevEdit} = {
   editOn: {status: true, textTitle: 'Editar Produto'},
 }
 const FormStock = () => {
+  const { calculateProfit, calculateProfitUnitary, calculatePriceToSell, calculateProductWithoutProfit } = new Profit();
   const {idProduct} = useSelector(selectorProducts);
   const dispatch = useDispatch();
   const {addNewProduct, products, editProduct} = useRequestProduct();
@@ -33,6 +36,7 @@ const FormStock = () => {
   const [preEdit, setPreEdit] = useState<IPrevEdit>(configPreEdit.editOff);
   const [callReset, setCallReset] = useState<"" | "reset">("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
   const [valuesDefault] = useState<IValuesDefault>({
     ra: handleValueRandom(5).toUpperCase(),
     description: "",
@@ -40,6 +44,8 @@ const FormStock = () => {
     type: "",
     price: 1,
     amount: 1,
+    porcentProfit: 25,
+    profit: 0,
   });
   
   const {
@@ -47,21 +53,27 @@ const FormStock = () => {
     register,
     resetField,
     setValue,
+    control,
     formState: { errors },
   } = useForm({ defaultValues: { ...valuesDefault } });
-
+  const profitPorcentWatch = useWatch({control, name: 'porcentProfit'});
+  const priceWatch = useWatch({control, name: 'price'});
+  const amountWatch = useWatch({control, name: 'amount'});
+  
   const convertValueToNumber = (value: number | string) => typeof value === 'number' ? value : parseFloat(value);
-
+  
   const handleReset = () => {
     Object.keys(valuesDefault).forEach((key: string) => {
       resetField(key as Keys);
     });
     setCallReset("reset");
-  };    
+  };
+
   const onSubmitProduct = (data: IValuesDefault) => {
+    
     try {
       setIsLoading(true);
-      addNewProduct(data);
+      addNewProduct({...data, profit: calculateProfit(data.porcentProfit, data.price)});
     } catch (error) {
 
     } finally {
@@ -223,23 +235,6 @@ const FormStock = () => {
         ) : (
           <ErrorMessage text={`Ocorreu um erro em categorias! ${categoriesError.message}`}/>
         )}
-      
-
-        <MainStyles.InputContainer>
-          <label>
-            <p className= {preEdit.status ? "editStyle" : "" }>Quantidade:</p>
-            <input
-              type="number"
-              {...register("amount", { required: true })}
-              placeholder="0"
-              min={1}
-            />
-            <span>*</span>
-          </label>
-          {errors.amount?.type === "required" && (
-            <p className="errorMessage">Campo Quantidade é obrigatório!</p>
-          )}
-        </MainStyles.InputContainer>
 
         <MainStyles.InputContainer>
           <label>
@@ -255,6 +250,52 @@ const FormStock = () => {
           {errors.price?.type === "required" && (
             <p className="errorMessage">Campo Quantidade é obrigatório!</p>
           )}
+        </MainStyles.InputContainer>
+
+        <MainStyles.InputContainer>
+          <label>
+            <p className= {preEdit.status ? "editStyle" : "" }>Quantidade:</p>
+            <input
+              type="number"
+              {...register("amount", { required: true })}
+              placeholder="0"
+              min={1}
+            />
+            <span>*</span>
+          </label>
+          {errors.amount?.type === "required" && (
+
+            <p className="errorMessage">Campo Quantidade é obrigatório!</p>
+          )}
+        </MainStyles.InputContainer>
+      
+        <MainStyles.InputContainer>
+          <label className="rangerInputContainer">
+            <p>Defina o Lucro </p>
+            <input type="range"  {...register('porcentProfit')} min={'1'} max={100}/>
+            <span>{profitPorcentWatch} % </span>
+          </label>
+
+          <div className="ContainerProfit">
+            <span>
+              <p>{formatMoneyBR.format(calculateProfit(priceWatch, profitPorcentWatch))}</p>
+              <p>Lucro Total</p>
+            </span>
+
+            <span>
+              <p>
+                {
+                  formatMoneyBR.format(
+                    calculateProfitUnitary(
+                      calculatePriceToSell(profitPorcentWatch, priceWatch, amountWatch),
+                      calculateProductWithoutProfit(amountWatch, priceWatch))
+                  )
+                }
+              </p>
+              <p>Lucro por unidade</p>
+            </span>
+            
+          </div>
         </MainStyles.InputContainer>
 
         <MainStyles.ButtonsContainer>

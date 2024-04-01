@@ -83,14 +83,14 @@ export const CardMetrics = styled.div`
     }
     .profitScreen svg {
         margin-right: .5rem;
-        font-size: 1rem;
+        font-size: 1.5rem;
         color: #6ee7b7;
     }
     .profitScreen span:nth-child(1) {
         color: #fff;
     }
     .profitScreen span {
-        font-size: 1rem;
+        font-size: 1.3rem;
         color: var(--color-green--dark);
     }
     .sellStyle svg {

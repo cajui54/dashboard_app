@@ -17,4 +17,6 @@ export interface IValuesDefault {
   price: number;
   amount: number;
   type: string;
+  porcentProfit: number,
+  profit: number,
 }
