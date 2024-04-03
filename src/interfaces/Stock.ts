@@ -15,6 +15,7 @@ export interface IValuesDefault {
   description: string;
   brand: string;
   price: number;
+  priceSell:  number,
   amount: number;
   type: string;
   porcentProfit: number,

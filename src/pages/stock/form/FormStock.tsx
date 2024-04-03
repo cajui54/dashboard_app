@@ -43,6 +43,7 @@ const FormStock = () => {
     brand: "",
     type: "",
     price: 1,
+    priceSell: 1,
     amount: 1,
     porcentProfit: 25,
     profit: 0,
@@ -73,7 +74,11 @@ const FormStock = () => {
     
     try {
       setIsLoading(true);
-      addNewProduct({...data, profit: calculateProfit(data.porcentProfit, data.price)});
+      addNewProduct({
+          ...data,
+          profit: calculateProfit(data.porcentProfit, data.price),
+          priceSell: calculatePriceToSell(data.profit, data.price, data.amount),
+    });
     } catch (error) {
 
     } finally {
@@ -246,6 +251,10 @@ const FormStock = () => {
               min={1}
             />
             <span>*</span>
+            <Styles.ContainerPriceUnity>
+              <span>{formatMoneyBR.format(calculateProductWithoutProfit(amountWatch, priceWatch))}</span>
+              <span>Preço por Unidade</span>
+            </Styles.ContainerPriceUnity>
           </label>
           {errors.price?.type === "required" && (
             <p className="errorMessage">Campo Quantidade é obrigatório!</p>
@@ -293,6 +302,18 @@ const FormStock = () => {
                 }
               </p>
               <p>Lucro por unidade</p>
+            </span>
+
+            
+            <span>
+              <p>
+                {
+                  formatMoneyBR.format(
+                    calculatePriceToSell(profitPorcentWatch, priceWatch, amountWatch),
+                  )
+                }
+              </p>
+              <p>Preço de venda</p>
             </span>
             
           </div>

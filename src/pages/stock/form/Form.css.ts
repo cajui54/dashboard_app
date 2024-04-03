@@ -27,7 +27,7 @@ export const MainFormStock = styled.div`
     justify-content: center;
 
     span {
-      margin-right: 2rem;
+      margin-right: 1rem;
       text-align: center;
     }
     span p:first-child {
@@ -36,7 +36,7 @@ export const MainFormStock = styled.div`
     }
     span p:last-child {
       color: #fff;
-      
+      font-size: .7rem;
     }
   }
 `;
@@ -64,3 +64,20 @@ export const LogoForm = styled.div`
     margin-top: .2rem;
   }
 `;
+export const ContainerPriceUnity = styled.div`
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  right: 5rem;
+  top: 1rem;
+
+  span:first-child {
+    font-size: 2rem;
+    color: var(--color-green--dark);
+  }
+  span:last-child {
+    color: #fff;
+    font-size: .7rem;
+  }
+`
