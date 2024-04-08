@@ -4,7 +4,6 @@ import SearchResult from './SearchResult/SearchResult';
 
 const Home = () => {
   
-
   return (
     <Styles.HomeMain>
       <Styles.ContainerSearh>

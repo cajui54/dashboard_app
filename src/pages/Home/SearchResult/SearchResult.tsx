@@ -1,4 +1,3 @@
-import React from 'react'
 import * as Styles from './SearchResult.css';
 import { useSelector } from 'react-redux';
 import { selectorCart } from '../../../redux/slices/sliceCart';
