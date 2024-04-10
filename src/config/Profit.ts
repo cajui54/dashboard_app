@@ -60,5 +60,9 @@ export class Profit {
         }
         return "spanAvailableTable";
       };
+      convertToNumber = (value: number | string): number => {
+        return typeof value === 'string' ? parseInt(value) : value;
+      }
+      converToFloat = (value: number | string): number => typeof value === 'string' ? parseFloat(value) : value;
 }
 

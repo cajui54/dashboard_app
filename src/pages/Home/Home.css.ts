@@ -4,6 +4,7 @@ export const HomeMain = styled.div`
     width: 95%;
     min-height: 100vh;
     margin: 3rem auto;
+    display: flex;
 `
 export const ContainerSearh = styled.div`
     min-height: 100vh;

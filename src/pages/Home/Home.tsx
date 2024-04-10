@@ -1,3 +1,4 @@
+import Cart from './Cart/Cart';
 import * as Styles from './Home.css';
 import SearchSell from './Search/SearchSell';
 import SearchResult from './SearchResult/SearchResult';
@@ -10,6 +11,7 @@ const Home = () => {
         <SearchSell/>
         <SearchResult/>
       </Styles.ContainerSearh>
+      <Cart/>
     </Styles.HomeMain>
   )
 }

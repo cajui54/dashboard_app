@@ -14,7 +14,7 @@ interface IDataInput {
     search: string
 }
 const SearchSell = () => {
-    const {setInput } = useSearchByDescription();
+    const {setInput, resetStorage } = useSearchByDescription();
     const {register, resetField, setError, clearErrors, handleSubmit, formState: {errors}} = useForm<IDataInput>({defaultValues: {search: ""}});
     const [classType, setClassFocus] = React.useState<IClassFocus>({classP: ""});
     const [resetAll, setResetAll] = React.useState<boolean>(false);
@@ -31,6 +31,7 @@ const SearchSell = () => {
     const handleReset = () => {
         clearErrors("search");
         setIsLoading(false);
+        resetStorage();
     }
     const handleSearchSubmit = (data: IDataInput) => {
         console.log(data);
