@@ -5,6 +5,7 @@ export const CartContainer = styled.div`
     border-radius: .5rem;
     width: 40%;
     min-height: 30rem;
+    padding: 1rem 0;
 `
 export const LogoContainer = styled.div `
     display: flex;
@@ -91,16 +92,21 @@ export const ItemsContainer = styled.div`
     margin: 0 auto;
     
     ul {
-        width: 90%;
+        width: 100%;
         margin: 0 auto;
-        
+        padding: 1rem 0;
+        overflow-y: scroll;
+        scroll-behavior: smooth;
+        scrollbar-color: var(--color-green--dark) var(--main-bg-color--secundary);
+        height: 30rem;
     }
+
     li {
         background-color: var(--main-bg-color--secundary);
         border: .1rem dotted var(--color-green);
         padding: 1rem;
         margin: 1rem auto;
-        width: 95%;
+        width: 90%;
         border-radius: .5rem;
         display: flex;
         align-items: center;

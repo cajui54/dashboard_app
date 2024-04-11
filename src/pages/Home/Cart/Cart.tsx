@@ -8,12 +8,16 @@ import * as Styles from '../Cart/Cart.css';
 import { Profit } from "../../../config/Profit";
 import { formatMoneyBR } from "../../../config/formatMoneyBR";
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { clearCart } from "../../../redux/slices/sliceCart";
+import { IStockAs } from "../../../interfaces/Stock";
 
 const Cart = () => {
-  const { itemsStorage } = useCartStorage();
+  const { itemsStorage} = useCartStorage();
   const {converToFloat} = new Profit();
   const [valueItems, setValues] = useState<{totalPay: number}>({totalPay: 0});
-
+  const dispatchCart = useDispatch();
+      
   useEffect(() => {
     if(itemsStorage.length > 0 )  {
       const payTotal = itemsStorage.map((item) => item.accPrice).reduce((acc, curr) => converToFloat(acc) + converToFloat(curr), 0);
@@ -23,6 +27,11 @@ const Cart = () => {
       })
     }
   }, [itemsStorage]);
+
+  const handleReset = () => {
+    dispatchCart(clearCart([]));
+    setValues({totalPay: 0});
+  }
 
   return (
     <Styles.CartContainer>
@@ -38,7 +47,7 @@ const Cart = () => {
       
       <Styles.ContainerList>
         <Styles.InfoContainer>
-          <button>
+          <button onClick={handleReset}>
             <MdCleaningServices />
             Cancelar
           </button>
@@ -63,41 +72,38 @@ const Cart = () => {
         <Styles.ItemsContainer>
         {itemsStorage.length > 0 ? (
           <ul>
-            <li>
+
+            { itemsStorage.map((item, index) => (
+            <li key={index}>
 
               <div>
                 <span>Produto</span>
-                <span>Coca-Cola 2 L</span>
+                <span>{item.description}</span>
               </div>
 
               <div>
                 <span>Preço uni</span>
-                <span>R$:3.99</span>
+                <span>{formatMoneyBR.format(converToFloat(item.priceSell))}</span>
               </div>
 
               <div>
                 <span>Quantidade</span>
-                <span>5</span>
+                <span>{item.amountItems}</span>
               </div>
 
               <div>
                 <span>Valor Total</span>
-                <span>R$:3.99</span>
+                <span>{formatMoneyBR.format(converToFloat(item.accPrice))}</span>
               </div>
               
               <button>
                 <TbShoppingCartX />
               </button>
             </li>
-            <li>sssssss</li>
-            <li>sssssss</li>
-            <li>sssssss</li>
-            <li>sssssss</li>
-            <li>sssssss</li>
-            <li>sssssss</li>
-            <li>sssssss</li>
-            <li>sssssss</li>
-            <li>sssssss</li>
+
+            ))
+
+            }
           </ul>
         ): (
           <p className='messageEmpty'>Não há produtos na lista ainda!</p>

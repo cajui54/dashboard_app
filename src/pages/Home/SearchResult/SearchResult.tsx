@@ -9,11 +9,12 @@ import { Profit } from '../../../config/Profit';
 import { formatMoneyBR } from '../../../config/formatMoneyBR';
 import { ChangeEvent, useEffect, useState, FocusEvent } from 'react';
 import { MdOutlineShoppingCartCheckout } from "react-icons/md";
-
+import useSearchByDescription from '../../../hooks/useSearchByDescription';
 const SearchResult = () => {
-  const [accValues, setAccValues] = useState<{accAmount: number, accPrice: number}>({accAmount: 1, accPrice: 0});;
+  const [accValues] = useState<{accAmount: number, accPrice: number}>({accAmount: 1, accPrice: 0});;
   const { searchResultLoading } = useSelector(selectorCart);
   const dispatch = useDispatch()
+  const {updateStorage} = useSearchByDescription()
   const { checkAmount, setColorClassSpan, converToFloat, convertToNumber} = new Profit();
   const [itemsStorage, setItemsStorage] = useState<IStockAs[] | []>([]);
   const [updateItems, setUpdateItems] = useState<IStockAs[] | []>([]);
@@ -27,9 +28,7 @@ const SearchResult = () => {
       event.target.value = amount.toString();
     }
   }
-  const updateValuesCart = (item: IStockAs) => {
 
-  }
   const handleChangeInput = (event: ChangeEvent<HTMLInputElement>, itemProduct: IStockAs) => {
     const inputAmount = convertToNumber(event.target.value);
     
@@ -50,14 +49,12 @@ const SearchResult = () => {
     } catch(error) {
       console.log(`Ocorreu um erro insperado!\n (in ChangeInput) - ${error}`);
       
-    } finally {
-
-    }
-    
+    } 
   }
+
   const handleSubmitCart = (item: IStockAs) => {
-    console.log(item);
     dispatch(addCart(item)) ;
+    
   }
   
   useEffect(() => {

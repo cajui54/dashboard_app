@@ -2,6 +2,7 @@ import {useState, useEffect} from 'react'
 import useRequestProduct from './useRequestProduct';
 import { useDispatch } from 'react-redux';
 import { searchItems, updateItemsResult } from '../redux/slices/sliceCart';
+import { IStockAs } from '../interfaces/Stock';
 
 
 const useSearchByDescription = () => {
@@ -17,6 +18,13 @@ const useSearchByDescription = () => {
             alert(`Ocorreu um error ao resetar Storage \n ${error}`);
         }
         
+    }
+    const updateStorage = (items: IStockAs[]) => {
+        try {
+            sessionStorage.setItem('cart_prev', JSON.stringify(items));
+        } catch (error) {
+            alert(`Ocorreu um erro inespado no update prev_cart`)
+        }
     }
 
     useEffect(() => {
@@ -41,6 +49,7 @@ const useSearchByDescription = () => {
   return {
     setInput,
     resetStorage,
+    updateStorage
   }
 }
 

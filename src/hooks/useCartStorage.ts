@@ -2,22 +2,25 @@ import React from 'react'
 import { useSelector } from 'react-redux';
 import { selectorCart } from '../redux/slices/sliceCart';
 import { IStockAs } from '../interfaces/Stock';
+
 const useCartStorage = () => {
-    const  {itemsCart} = useSelector(selectorCart);
     const [itemsStorage, setItemsStorage] = React.useState<IStockAs[]>([]);
-  
-    React.useEffect(() => {
-      const saveStorage = async () => {
-        try {
+    const  {itemsCart} = useSelector(selectorCart);
+   
 
-          sessionStorage.setItem('cart', JSON.stringify(itemsCart));
-
-        } catch(error) {
-          alert(`Ocorreu um erro inesperador no LocalStorage! \n${error}`);
-        }
+    const saveStorage = async (items: IStockAs[] | []) => {
+      try {
         
+        sessionStorage.setItem('cart', JSON.stringify(items));
+
+      } catch(error) {
+        alert(`Ocorreu um erro inesperador no LocalStorage! \n${error}`);
       }
-      saveStorage();
+      
+    }
+
+    React.useEffect(() => {
+      saveStorage(itemsCart);
 
     }, [itemsCart]);
 
@@ -37,9 +40,7 @@ const useCartStorage = () => {
       
     }, [itemsCart]);
 
-  
-    
-  return { itemsStorage }
+  return { itemsStorage, saveStorage }
 }
 
 export default useCartStorage

@@ -27,14 +27,16 @@ const sliceCart = createSlice({
         },
         addCart (state, {payload}: PayloadAction<IStockAs>) {     
             state.itemsCart = [...state.itemsCart, payload];
-            
             return state;
-
+        },
+        clearCart(state, {payload}: PayloadAction<[]>) {
+            state.itemsCart = payload;
+            return state;
         }
     } 
 })
 
-export const { searchItems, updateItemsResult, addCart } = sliceCart.actions;
+export const { searchItems, updateItemsResult, addCart, clearCart } = sliceCart.actions;
 
 export const selectorCart = (state: any) => state.cart;
 
