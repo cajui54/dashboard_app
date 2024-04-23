@@ -24,6 +24,8 @@ const useSearchByDescription = () => {
             sessionStorage.setItem('cart_prev', JSON.stringify(items));
         } catch (error) {
             alert(`Ocorreu um erro inespado no update prev_cart`)
+        } finally {
+            dispatchCart(updateItemsResult(true));
         }
     }
 

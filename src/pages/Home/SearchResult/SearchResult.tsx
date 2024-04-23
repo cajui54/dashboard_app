@@ -18,8 +18,7 @@ const SearchResult = () => {
   const { checkAmount, setColorClassSpan, converToFloat, convertToNumber} = new Profit();
   const [itemsStorage, setItemsStorage] = useState<IStockAs[] | []>([]);
   const [updateItems, setUpdateItems] = useState<IStockAs[] | []>([]);
- 
-
+  
   const handleBlurInput = (event: FocusEvent<HTMLInputElement>, amount: number | string) => {
     const inputAmount = convertToNumber(event.target.value);
 
@@ -51,9 +50,42 @@ const SearchResult = () => {
       
     } 
   }
-
+  const setItemsUpdate = (item: IStockAs) => {
+    if(updateItems.length > 0) {
+      return updateItems.map((_item) => {
+        if(_item.id === item.id) {
+          _item = {..._item,
+                amount: convertToNumber(_item.amount) - convertToNumber(item.amountItems),
+                accPrice: (converToFloat(item.amountItems) * converToFloat(item.priceSell))
+          }
+        }
+        return _item;
+      });
+    } 
+    return [{
+        ...item,
+        amount: convertToNumber(item.amount) - convertToNumber(item.amountItems),
+        accPrice: (converToFloat(item.amountItems) * converToFloat(item.priceSell))
+      }];
+  }
+  const updateResulSearch = (item: IStockAs) => {
+    return itemsStorage.map((_itemStorage) => {
+      if(_itemStorage.id === item.id) {
+        return {
+          ..._itemStorage,
+          amount: convertToNumber(_itemStorage.amount) - convertToNumber(item.amountItems),
+          accAmount: convertToNumber(_itemStorage.amount) - convertToNumber(item.amountItems),
+        }
+      }
+      return _itemStorage;
+    })
+    
+  }
   const handleSubmitCart = (item: IStockAs) => {
-    dispatch(addCart(item)) ;
+    const newItemsResult = updateResulSearch(item);
+  
+    dispatch(addCart(item));
+    updateStorage(newItemsResult);
     
   }
   
@@ -65,7 +97,7 @@ const SearchResult = () => {
         const items = ItemsJSON.map((item) => {
           return {...item, accPrice: item.priceSell, accAmount: item.amount, amountItems: 1}
         })
-        setItemsStorage(items)
+        setItemsStorage(items);
       }
       loadLocalStorage();
 
@@ -76,12 +108,7 @@ const SearchResult = () => {
     }
   }, [searchResultLoading]);
 
-  useEffect(() => {
-    if(updateItems.length > 0) {
-      setItemsStorage(updateItems);
-    }
-    
-  }, [updateItems]);
+
   
   return (
     <Styles.MainSearchResult>

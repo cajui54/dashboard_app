@@ -10,7 +10,6 @@ const useCartStorage = () => {
 
     const saveStorage = async (items: IStockAs[] | []) => {
       try {
-        
         sessionStorage.setItem('cart', JSON.stringify(items));
 
       } catch(error) {

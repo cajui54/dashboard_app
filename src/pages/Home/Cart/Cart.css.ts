@@ -149,3 +149,81 @@ export const ItemsContainer = styled.div`
         border-radius: .5rem;
     }
 `
+export const FormContainer = styled.div`
+    width: 80%;
+    margin: 2rem auto;
+    form {
+        padding: .5rem;
+    }
+    h2 {
+        color: var(--color-green--dark);
+        margin-bottom: 1.5rem;
+    }
+`
+export const inputContainer = styled.div`
+    background-color: var(--color-black);
+    padding: 1.5rem;
+    border-radius: .5rem;
+    margin: 2rem 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    span {
+        font-size: 2rem;
+    }
+    span svg {
+        font-size: 2rem;
+        margin: 0 .9rem;
+        color: var(--color-green--dark);
+    }
+    input {
+        background-color: var(--main-bg-color--secundary);
+        width: 10rem;
+        padding: 1rem;
+        border-radius: .5rem;
+        border: none;
+        border: .8px solid var(--color-green--dark);
+        color: var(--color-green--dark);
+        letter-spacing: .2rem;
+        font-size: 2rem;
+    }
+`
+export const SpanContainer = styled.div`
+    background-color: var(--color-black);
+    padding: 1.5rem;
+    border-radius: .5rem;
+    margin: 2rem 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    span:first-child {
+        font-size: 2rem;
+    }
+    span:first-child svg {
+        font-size: 2rem;
+        margin: 0 .9rem;
+        color: var(--color-green--dark);
+    }
+    span:last-child {
+        color: var(--color-green--dark);
+        font-size: 2rem;
+        font-weight: bold;
+    }
+`
+export const ButtonsContainer = styled.div`
+    width: 95%;
+    margin: 1rem auto;
+    
+    button {
+        width: 100%;
+        padding: 1rem;
+        border: none;
+        border-radius: 5rem;
+        background-color: var(--color-green--dark);
+        color: var(--main-bg-color--secundary);
+        font-weight: bold;
+        font-size: 1.5rem;
+        cursor: pointer;
+    }
+
+`
