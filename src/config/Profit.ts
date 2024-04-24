@@ -64,5 +64,7 @@ export class Profit {
         return typeof value === 'string' ? parseInt(value) : value;
       }
       converToFloat = (value: number | string): number => typeof value === 'string' ? parseFloat(value) : value;
+      changeMoney = (valueInput: number, valueTotal: number) => valueInput - valueTotal;
+
 }
 
