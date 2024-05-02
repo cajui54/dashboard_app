@@ -240,6 +240,9 @@ export const ButtonsContainer = styled.div<{ button: boolean }>`
   margin: 1rem auto;
 
   button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 100%;
     padding: 1rem;
     border: none;
@@ -250,5 +253,13 @@ export const ButtonsContainer = styled.div<{ button: boolean }>`
     font-size: 1.5rem;
     cursor: pointer;
     opacity: ${(props) => (props.button ? 0.5 : 1)};
+  }
+  button span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  button span svg {
+    margin-right: 0.5rem;
   }
 `;

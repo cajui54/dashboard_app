@@ -274,7 +274,9 @@ const FormUser = () => {
                 <option value="default">Atendente</option>
                 <option value="stock">Estoquista</option>
                 <option value="finance">Financeiro</option>
-                <option value="admin" disabled>Administrador</option>
+                <option value="admin" disabled>
+                  Administrador
+                </option>
               </select>
               <span>*</span>
             </label>

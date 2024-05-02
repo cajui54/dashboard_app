@@ -11,13 +11,14 @@ export interface IStockAs {
 }
 export type Keys = "ra" | "description" | "brand" | "type" | "price" | "amount";
 export interface IValuesDefault {
+  id?: string;
   ra: string;
   description: string;
   brand: string;
   price: number;
-  priceSell:  number,
+  priceSell: number;
   amount: number;
   type: string;
-  porcentProfit: number,
-  profit: number,
+  porcentProfit: number;
+  profit: number;
 }

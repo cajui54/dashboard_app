@@ -12,12 +12,21 @@ import { formatMoneyBR } from "../../../config/formatMoneyBR";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { clearCart, removeItemCart } from "../../../redux/slices/sliceCart";
-
+import { getData } from "../../../config/configData";
+import useRequestFinance from "../../../hooks/useRequestFinance";
+import { ISell } from "../../../interfaces/Finance";
+import SVGLoading from "../../../components/Messages/SVGAnimation/SVGLoading";
+import useRequestProduct from "../../../hooks/useRequestProduct";
+import useSearchByDescription from "../../../hooks/useSearchByDescription";
 interface IBuyData {
   input?: number;
   change?: number;
 }
 const Cart = () => {
+  const { resetStorage } = useSearchByDescription();
+  const { addNewSell } = useRequestFinance();
+  const { updateAmountProducts } = useRequestProduct();
+  const [loadingSubmit, setLoadingSubmit] = useState<boolean>(false);
   const { itemsStorage, saveStorage } = useCartStorage();
   const { converToFloat, changeMoney } = new Profit();
   const [valueItems, setValues] = useState<{ totalPay: number }>({
@@ -28,17 +37,6 @@ const Cart = () => {
   const [input, setInput] = useState<{ status: boolean }>({ status: true });
   const dispatchCart = useDispatch();
 
-  const getData = () => {
-    const date = new Date();
-    const month = date.getMonth() + 1;
-    const dateNow = `${date.getDate()}/${month}/${date.getFullYear()}`;
-    const time = `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
-
-    return {
-      dateNow,
-      time,
-    };
-  };
   useEffect(() => {
     if (itemsStorage.length > 0) {
       const payTotal = itemsStorage
@@ -73,7 +71,7 @@ const Cart = () => {
     }
     setButton({ status: true });
     setInput({ status: false });
-    setValues({ totalPay: 0 });
+
     setDataBuy({ input: 0, change: 0 });
     return;
   };
@@ -93,18 +91,32 @@ const Cart = () => {
     }
   };
   const handleSubmit = (event: React.FormEvent) => {
-    let datas = {};
     event.preventDefault();
-    if (dataBuy.input! >= valueItems.totalPay) {
-      const { dateNow, time } = getData();
-      datas = {
-        date: dateNow,
-        time,
-        totalBuy: valueItems.totalPay,
-      };
-      console.log(datas);
+    try {
+      if (dataBuy.input! >= valueItems.totalPay) {
+        setLoadingSubmit(true);
+        const { dateNow, time } = getData();
+        let datas: ISell = {
+          date: dateNow,
+          time,
+          totalBuy: valueItems.totalPay.toFixed(2),
+          items: itemsStorage,
+        };
+        addNewSell(datas);
+        updateAmountProducts(itemsStorage);
+        resetStorage();
+      }
+    } catch (error) {
+      alert(`Ocorreu um error inesperado! \n ${error}`);
+    } finally {
+      setTimeout(() => {
+        setLoadingSubmit(false);
+        settingStatus(false);
+        handleReset();
+      }, 3000);
     }
   };
+
   const handleMoveClick = () => {
     window.scroll({
       top: 600,
@@ -235,7 +247,13 @@ const Cart = () => {
 
             <Styles.ButtonsContainer button={button.status}>
               <button type="submit" disabled={button.status}>
-                Confirmar compra
+                {loadingSubmit ? (
+                  <span>
+                    <SVGLoading /> Carregando ...
+                  </span>
+                ) : (
+                  <span>Confirmar compra</span>
+                )}
               </button>
             </Styles.ButtonsContainer>
           </form>
