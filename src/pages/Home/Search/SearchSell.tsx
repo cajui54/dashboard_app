@@ -7,6 +7,8 @@ import ErrorMessage from "../../../components/Messages/Error/ErrorMessage";
 import { useForm } from "react-hook-form";
 import { FaArrowRotateLeft } from "react-icons/fa6";
 import useSearchByDescription from "../../../hooks/useSearchByDescription";
+import { updateItemsResult } from "../../../redux/slices/sliceCart";
+
 interface IClassFocus {
   classP: "" | "focusInputP" | "errorInput";
 }
@@ -41,9 +43,9 @@ const SearchSell = () => {
     clearErrors("search");
     setIsLoading(false);
     resetStorage();
+    updateItemsResult(false);
   };
   const handleSearchSubmit = (data: IDataInput) => {
-    console.log(data);
     setInput(data.search);
     //setError("search", {type: "validate", message: `O produto ${data.search} não foi encontrado!`})
     setResetAll(true);

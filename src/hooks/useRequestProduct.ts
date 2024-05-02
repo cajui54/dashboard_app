@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   collection,
   getFirestore,
@@ -74,13 +74,13 @@ const useRequestProduct = () => {
       alert(`Ocorreu um error ao deletar o produto! \n ${error}`);
     }
   };
+
   const editProduct = async (data: any) => {
     try {
       const productDoc = doc(db, "products", data.id);
 
       await updateDoc(productDoc, data);
 
-      alert("Produto foi atualizado com sucesso!");
       dispatch(setCallFetchProduct(true));
     } catch (error) {
       alert(`Ocorreu um error inesperado ao editar o produto! \n ${error}`);
