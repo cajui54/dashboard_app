@@ -23,8 +23,33 @@ const SearchResult = () => {
   const { updateStorage } = useSearchByDescription();
   const { checkAmount, setColorClassSpan, converToFloat, convertToNumber } =
     new Profit();
+  const [updateItems, setUpdateItems] = useState<IStockAs[] | []>([]);
   const [itemsStorage, setItemsStorage] = useState<IStockAs[] | []>([]);
-
+  const setItemsUpdate = (item: IStockAs) => {
+    if (updateItems.length > 0) {
+      return updateItems.map((_item) => {
+        if (_item.id === item.id) {
+          _item = {
+            ..._item,
+            amount:
+              convertToNumber(_item.amount) - convertToNumber(item.amountItems),
+            accPrice:
+              converToFloat(item.amountItems) * converToFloat(item.priceSell),
+          };
+        }
+        return _item;
+      });
+    }
+    return [
+      {
+        ...item,
+        amount:
+          convertToNumber(item.amount) - convertToNumber(item.amountItems),
+        accPrice:
+          converToFloat(item.amountItems) * converToFloat(item.priceSell),
+      },
+    ];
+  };
   const handleBlurInput = (
     event: FocusEvent<HTMLInputElement>,
     amount: number | string
@@ -53,6 +78,7 @@ const SearchResult = () => {
           }
           return _item;
         });
+        setUpdateItems(valuesItems);
       }
     } catch (error) {
       console.log(`Ocorreu um erro insperado!\n (in ChangeInput) - ${error}`);
@@ -81,7 +107,6 @@ const SearchResult = () => {
     dispatch(addCart(item));
     updateStorage(newItemsResult);
   };
-
   useEffect(() => {
     try {
       const loadLocalStorage = async () => {
@@ -106,6 +131,7 @@ const SearchResult = () => {
       dispatch(updateItemsResult(false));
     }
   }, [searchResultLoading]);
+
   useEffect(() => {
     if (!searchResultLoading && itemsStorage.length === 0) {
       const items = products.map((item) => {
@@ -119,6 +145,7 @@ const SearchResult = () => {
       setItemsStorage(items);
     }
   }, [products, searchResultLoading]);
+
   return (
     <Styles.MainSearchResult>
       <h2>Produtos Cadastrados:</h2>
