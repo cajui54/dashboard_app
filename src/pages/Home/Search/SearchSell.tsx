@@ -8,7 +8,8 @@ import { useForm } from "react-hook-form";
 import { FaArrowRotateLeft } from "react-icons/fa6";
 import useSearchByDescription from "../../../hooks/useSearchByDescription";
 import { updateItemsResult } from "../../../redux/slices/sliceCart";
-
+import { useSelector } from "react-redux";
+import { selectorCallback } from "../../../redux/slices/sliceCallback";
 interface IClassFocus {
   classP: "" | "focusInputP" | "errorInput";
 }
@@ -16,6 +17,8 @@ interface IDataInput {
   search: string;
 }
 const SearchSell = () => {
+  const callbackDatas = useSelector(selectorCallback);
+
   const { setInput, resetStorage } = useSearchByDescription();
   const {
     register,
@@ -46,10 +49,18 @@ const SearchSell = () => {
     updateItemsResult(false);
   };
   const handleSearchSubmit = (data: IDataInput) => {
-    setInput(data.search);
-    //setError("search", {type: "validate", message: `O produto ${data.search} não foi encontrado!`})
-    setResetAll(true);
-    setIsLoading(true);
+    try {
+      setInput(data.search);
+      setResetAll(true);
+      setIsLoading(true);
+      callbackDatas.notFound &&
+        setError("search", {
+          type: "validate",
+          message: `O produto ${data.search}, não foi encontrado!`,
+        });
+    } catch (error) {
+      alert(`Ocorreu um error inesperado! \n ${error}`);
+    }
   };
   const prevSubmit = () => {
     handleSubmit(handleSearchSubmit)();
